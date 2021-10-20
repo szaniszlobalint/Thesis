@@ -8,18 +8,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 public class ProjectController {
 
     private final ProjectRepository projectRepository;
 
     public ProjectController(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
-    }
-
-    @GetMapping("/test")
-    String getMessage() {
-        return "Hello Frontends!";
     }
 
     @GetMapping("/project")
@@ -29,7 +23,7 @@ public class ProjectController {
     }
 
     @PostMapping("/saveproject")
-    void addProjecct(@RequestBody Project project) {
+    void addProject(@RequestBody Project project) {
         projectRepository.save(project);
     }
 }

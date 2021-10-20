@@ -16,10 +16,9 @@ public class AppUserController {
     public AppUserController(AppUserRepository appUserRepository) {
         this.appUserRepository = appUserRepository;
     }
-
-    @GetMapping("/test")
-    String getMessage() {
-        return "Hello Frontends!";
+    @PostMapping("/login")
+    public App_User loginUser(@RequestBody App_User user) {
+        return appUserRepository.findByUsername(user.getLogin());
     }
 
     @GetMapping("/appuser")

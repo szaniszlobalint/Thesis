@@ -7,10 +7,16 @@ import {User} from "./user";
 })
 export class AppService {
 
+  httpOptions={
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
+
   constructor(private http: HttpClient) { }
 
-  testMethod(){
-    return this.http.get('http://localhost:8080/test', {responseType: 'text'});
+  loginUser(user: User){
+    return this.http.post<User>('http://localhost:8080/login', user);
   }
 
   getUsers(){

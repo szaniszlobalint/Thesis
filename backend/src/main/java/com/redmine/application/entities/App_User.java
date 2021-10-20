@@ -3,21 +3,21 @@ package com.redmine.application.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "stored_user")
+@Table(name = "app_user")
 public class App_User {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private long ID;
-    private String login;
+    private String username;
     private String password;
     private String mail;
 
     protected App_User() {    }
 
-    public App_User(long ID, String login, String password, String mail) {
+    public App_User(long ID, String username, String password, String mail) {
         this.ID = ID;
-        this.login = login;
+        this.username = username;
         this.password = password;
         this.mail = mail;
     }
@@ -27,7 +27,7 @@ public class App_User {
     }
 
     public String getLogin() {
-        return login;
+        return username;
     }
 
     public String getPassword() {
@@ -40,7 +40,7 @@ public class App_User {
 
     @Override
     public String toString() {
-        return "com.redmine.application.entities.System{" + "ID=" + ID +  "login="+ login +"password=" +password + "}";
+        return "com.redmine.application.entities.System{" + "ID=" + ID +  "login="+ username +"password=" +password + "}";
     }
 
 

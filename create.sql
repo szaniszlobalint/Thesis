@@ -68,12 +68,12 @@ INSERT INTO SYSTEM(id,type) VALUES(2, 'Redmine_B');
 
 INSERT INTO SYSTEM_PAIR(A_SystemID, B_SystemID) VALUES (1,2);
 
-INSERT INTO SYSTEM_USER(ID, firstname, lastname, login, mail, admin) VALUES (1, 'test', 'test', 'test', 'test@gmail.com', true );
-INSERT INTO SYSTEM_USER(ID, firstname, lastname, login, mail, admin) VALUES (2, 'tester', 'tester', 'tester', 'tester@gmail.com', true );
-INSERT INTO SYSTEM_USER(ID, firstname, lastname, login, mail, admin) VALUES (3, 'József', 'Kiss', 'kissjozsi', 'kissjozsi@gmail.com', false );
-INSERT INTO SYSTEM_USER(ID, firstname, lastname, login, mail, admin) VALUES (4, 'József', 'Kiss', 'jozsi12', 'kissjozsi@gmail.com', false );
-INSERT INTO SYSTEM_USER(ID, firstname, lastname, login, mail, admin) VALUES (5, 'János', 'Nagy', 'nagyjanos', 'nagyjanos@gmail.com', false );
-INSERT INTO SYSTEM_USER(ID, firstname, lastname, login, mail, admin) VALUES (6, 'János', 'Nagy', 'nagyjanos34', 'nagyjanos@gmail.com', false );
+INSERT INTO SYSTEM_USER(ID, firstname, lastname, login, password, mail, admin) VALUES (1, 'test', 'test', 'test', 'asd', 'test@gmail.com', true );
+INSERT INTO SYSTEM_USER(ID, firstname, lastname, login, password, mail, admin) VALUES (2, 'tester', 'tester', 'tester', 'asd', 'tester@gmail.com', true );
+INSERT INTO SYSTEM_USER(ID, firstname, lastname, login, password, mail, admin) VALUES (3, 'József', 'Kiss', 'kissjozsi', 'asd', 'kissjozsi@gmail.com', false );
+INSERT INTO SYSTEM_USER(ID, firstname, lastname, login, password, mail, admin) VALUES (4, 'József', 'Kiss', 'jozsi12', 'asd', 'kissjozsi@gmail.com', false );
+INSERT INTO SYSTEM_USER(ID, firstname, lastname, login, password, mail, admin) VALUES (5, 'János', 'Nagy', 'nagyjanos', 'asd', 'nagyjanos@gmail.com', false );
+INSERT INTO SYSTEM_USER(ID, firstname, lastname, login, password, mail, admin) VALUES (6, 'János', 'Nagy', 'nagyjanos34', 'asd', 'nagyjanos@gmail.com', false );
 
 INSERT INTO SYSTEM_USER_PAIR(A_UserID, B_UserID) VALUES (1,2);
 INSERT INTO SYSTEM_USER_PAIR(A_UserID, B_UserID) VALUES (3,4);

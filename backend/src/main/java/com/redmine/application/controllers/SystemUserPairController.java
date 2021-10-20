@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 public class SystemUserPairController {
 
     private final SystemUserPairRepository systemUserPairRepository;
@@ -19,10 +18,6 @@ public class SystemUserPairController {
         this.systemUserPairRepository = systemUserPairRepository;
     }
 
-    @GetMapping("/test")
-    String getMessage() {
-        return "Hello Frontends!";
-    }
 
     @GetMapping("/systemuserpair")
     public List<System_User_Pair> getSystemUserPairs() {

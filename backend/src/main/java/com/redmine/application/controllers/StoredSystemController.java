@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 public class StoredSystemController {
 
     private final SystemRepository systemRepository;
@@ -18,10 +17,6 @@ public class StoredSystemController {
         this.systemRepository = systemRepository;
     }
 
-    @GetMapping("/test")
-    String getMessage() {
-        return "Hello Frontends!";
-    }
 
     @GetMapping("/storedsystem")
     public List<Stored_System> getStoredSystems() {
