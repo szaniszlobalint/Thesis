@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    networks:
+      - redmine
+    environment:
+      - POSTGRES_PASSWORD=docker
+      - APP_DB_USER=dbuser
+      - APP_DB_PASS=docker
+      - APP_DB_NAME=redmineapp
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+    ports:
+      - 5432:5432
+
+  redmineA:
+    image: redmine:latest
+    networks:
+      - redmine
+    ports:
+      - 3000:3000
+    environment:
+      - REDMINE_DB_POSTGRES=postgres
+      - REDMINE_DB_DATABASE=redmineapp1
+      - REDMINE_DB_PASSWORD=docker
+
+  redmineB:
+    image: redmine:latest
+    networks:
+      - redmine
+    ports:
+      - 3010:3000
+    environment:
+      - REDMINE_DB_POSTGRES=postgres
+      - REDMINE_DB_DATABASE=redmineapp2
+      - REDMINE_DB_PASSWORD=docker
+
+networks:
+  redmine:
+    driver: bridge
