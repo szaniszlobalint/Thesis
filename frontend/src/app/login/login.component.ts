@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {AppService} from "../app.service";
+import {AppService} from "../services/app.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {User} from "../user";
+import {User} from "../models/user";
 import {Router} from "@angular/router";
 
 @Component({
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
 
   user: User= {
     id:0,
-    name: '',
+    login: '',
     password: '',
     mail: ''
   };
@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
   });
 
   loginUser() {
-    this.user.name = this.userForm.value.username;
+    this.user.login = this.userForm.value.username;
     this.user.password = this.userForm.value.password;
     this.appService.loginUser(this.user).subscribe(user => {
       //localStorage.setItem('jwt',user.accesToken!);

@@ -1,1 +1,26 @@
-<button>Hello</button>
+<!--<div class="custom-wrapper-example" matAutocompleteOrigin #origin="matAutocompleteOrigin">-->
+<!--<input-->
+<!--  matInput-->
+<!--  [formControl]="myControl"-->
+<!--  [matAutocomplete]="auto"-->
+<!--  [matAutocompleteConnectedTo]="origin">-->
+<!--</div>-->
+
+<!--<mat-autocomplete #auto="matAutocomplete">-->
+<!--  <mat-option *ngFor="let option of users" [value]="option">-->
+<!--    {{option}}-->
+<!--  </mat-option>-->
+<!--</mat-autocomplete>-->
+
+
+
+<mat-selection-list #userselect [multiple]="false">
+  <mat-list-option *ngFor="let user of users" [value]="user.login">
+    {{user.login}}
+  </mat-list-option>
+</mat-selection-list>
+
+
+<p>
+  Selected User: {{userselect.selectedOptions.selected[0]?.value}}
+</p>

@@ -21,10 +21,10 @@ public class AppUserController {
         return appUserRepository.findByUsername(user.getLogin());
     }
 
-    @GetMapping("/appuser")
-    public List<App_User> getStoredUsers() {
+    @GetMapping("/getallusers")
+    public List<App_User> getAppUsers() {
+        System.out.println(appUserRepository.findAll());
         return (List<App_User>) appUserRepository.findAll();
-
     }
 
     @PostMapping("/saveappuser")

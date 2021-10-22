@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {User} from "./user";
+import {User} from "../models/user";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class AppService {
   }
 
   getUsers(){
-    return this.http.get<User>('http://localhost:8080/users');
+    return this.http.get<User[]>('http://localhost:8080/getallusers');
   }
 
 
