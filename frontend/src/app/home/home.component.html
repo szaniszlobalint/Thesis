@@ -14,13 +14,26 @@
 
 
 
-<mat-selection-list #userselect [multiple]="false">
-  <mat-list-option *ngFor="let user of users" [value]="user.login">
+<mat-selection-list #Areduserselect [multiple]="false">
+  <mat-list-option *ngFor="let user of Aredusers" [value]="user.id">
     {{user.login}}
   </mat-list-option>
 </mat-selection-list>
 
 
 <p>
-  Selected User: {{userselect.selectedOptions.selected[0]?.value}}
+  Selected User: {{Areduserselect.selectedOptions.selected[0]?.value}}
 </p>
+
+<mat-selection-list #Breduserselect [multiple]="false">
+  <mat-list-option *ngFor="let user of Bredusers" [value]="user.id">
+    {{user.login}}
+  </mat-list-option>
+</mat-selection-list>
+
+
+<p>
+  Selected User: {{Breduserselect.selectedOptions.selected[0]?.value}}
+</p>
+
+<button (click)="connectUsers(Areduserselect.selectedOptions.selected[0]?.value,Breduserselect.selectedOptions.selected[0]?.value)" type="button">Connect</button>
