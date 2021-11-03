@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class Stored_System {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long ID;
     private String type;
 

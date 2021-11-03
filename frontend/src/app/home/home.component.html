@@ -14,26 +14,31 @@
 
 
 
+
 <mat-selection-list #Areduserselect [multiple]="false">
-  <mat-list-option *ngFor="let user of Aredusers" [value]="user.id">
+  <div *ngFor="let user of allRedUsers">
+  <mat-list-option (click)="connectionChecker(user.id!, 0)" *ngIf="user.systemid===1 && user.login!==''" [value]="user">
     {{user.login}}
   </mat-list-option>
+  </div>
 </mat-selection-list>
 
 
 <p>
-  Selected User: {{Areduserselect.selectedOptions.selected[0]?.value}}
+  Selected User: {{Areduserselect.selectedOptions.selected[0]?.value.login}}
 </p>
 
 <mat-selection-list #Breduserselect [multiple]="false">
-  <mat-list-option *ngFor="let user of Bredusers" [value]="user.id">
+  <div *ngFor="let user of allRedUsers">
+  <mat-list-option (click)="connectionChecker(0, user.id!)" *ngIf="user.systemid===2 && user.login!==''" [value]="user">
     {{user.login}}
   </mat-list-option>
+  </div>
 </mat-selection-list>
 
 
 <p>
-  Selected User: {{Breduserselect.selectedOptions.selected[0]?.value}}
+  Selected User: {{Breduserselect.selectedOptions.selected[0]?.value.login}}
 </p>
-
-<button (click)="connectUsers(Areduserselect.selectedOptions.selected[0]?.value,Breduserselect.selectedOptions.selected[0]?.value)" type="button">Connect</button>
+<button (click)="blablatUsers(Areduserselect.selectedOptions.selected[0]?.value.id,Breduserselect.selectedOptions.selected[0]?.value.id)" type="button">Show</button>
+<button (click)="connectUsers(Areduserselect.selectedOptions.selected[0]?.value.id,Breduserselect.selectedOptions.selected[0]?.value.id)" type="button">Connect</button>

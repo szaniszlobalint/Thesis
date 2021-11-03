@@ -8,33 +8,33 @@ public class System_User_Pair {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long ID;
-    private long A_UserID;
-    private long B_UserID;
+    private long id;
+    private long auserid;
+    private long buserid;
 
     protected System_User_Pair() {    }
 
-    public System_User_Pair(long ID, long a_UserID, long b_UserID) {
-        this.ID = ID;
-        A_UserID = a_UserID;
-        B_UserID = b_UserID;
+    public System_User_Pair(long id, long auserid, long buserid) {
+        this.id = id;
+        this.auserid = auserid;
+        this.buserid = buserid;
     }
 
     public long getID() {
-        return ID;
+        return id;
     }
 
-    public long getA_UserID() {
-        return A_UserID;
+    public long getAuserid() {
+        return auserid;
     }
 
-    public long getB_UserID() {
-        return B_UserID;
+    public long getBuserid() {
+        return buserid;
     }
 
     @Override
     public String toString() {
-        return "com.redmine.application.myapp.entities.System_Pair{" + "ID=" + ID + ", A_ID=" + A_UserID + "B_ID=" + B_UserID + "}";
+        return "com.redmine.application.myapp.entities.System_Pair{" + "ID=" + id + ", A_ID=" + auserid + "B_ID=" + buserid + "}";
     }
 
 

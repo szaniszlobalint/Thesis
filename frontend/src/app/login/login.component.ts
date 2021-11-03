@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
 
   user: User= {
     id:0,
-    login: '',
+    username: '',
     password: '',
     mail: ''
   };
@@ -29,13 +29,17 @@ export class LoginComponent implements OnInit {
   });
 
   loginUser() {
-    this.user.login = this.userForm.value.username;
+    this.user.username = this.userForm.value.username;
     this.user.password = this.userForm.value.password;
     this.appService.loginUser(this.user).subscribe(user => {
       //localStorage.setItem('jwt',user.accesToken!);
 
-      this.router.navigateByUrl('/home');
-      console.log("asd");
+      if(user != null) {
+        this.router.navigateByUrl('/home');
+      }
+      else{
+        console.log("something went wrong!")
+      }
     }, error => {
       console.error('Wrong Username or Password!');
     });

@@ -19,7 +19,6 @@ public class AUserController {
 
     @GetMapping("/getallredAusers")
     public List<ARedmineUser> getUsers() {
-        //System.out.println(userRepository.findAll());
         return (List<ARedmineUser>) userRepository.findAll();
     }
 

@@ -7,26 +7,33 @@ import javax.persistence.*;
 public class System_User {
 
     @Id
-    private long ID;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long id;
     private String firstname;
     private String lastname;
     private String login;
     private String mail;
     private boolean admin;
+    private long systemid;
+    private long redmineid;
 
     protected System_User() {    }
 
-    public System_User(long ID, String firstname, String lastname, String login, String mail, boolean admin) {
-        this.ID = ID;
+
+
+    public System_User(long id, String firstname, String lastname, String login, String mail, boolean admin, long systemid, long redmineid) {
+        this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.login = login;
         this.mail = mail;
         this.admin = admin;
+        this.systemid = systemid;
+        this.redmineid = redmineid;
     }
 
-    public long getID() {
-        return ID;
+    public long getId() {
+        return id;
     }
 
     public String getFirstname() {
@@ -49,10 +56,18 @@ public class System_User {
         return admin;
     }
 
+    public long getSystemid() {
+        return systemid;
+    }
+
+    public long getRedmineid() {
+        return redmineid;
+    }
+
     @Override
     public String toString() {
-        return "com.redmine.application.myapp.entities.System{" + "ID=" + ID + ", firstname=" + firstname +
-                ", lastname=" + lastname + "login="+ login +"mail=" +mail+ "admin=" + admin + "}";
+        return "com.redmine.application.myapp.entities.System{" + "ID=" + id + ", firstname=" + firstname +
+                ", lastname=" + lastname + "login="+ login +"mail=" +mail+ "admin=" + admin + "systemID=" + systemid + " redmineID= "+ redmineid+ "}";
     }
 
 

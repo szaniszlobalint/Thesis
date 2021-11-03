@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class System_Pair {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long ID;
     private long A_SystemID;
     private long B_SystemID;

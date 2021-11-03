@@ -29,4 +29,17 @@ public class SystemUserPairController {
         System.out.println(system_User_Pair);
         systemUserPairRepository.save(system_User_Pair);
     }
+
+    @PostMapping("/checksystemuserpairs")
+    System_User_Pair checkPairs(@RequestBody System_User_Pair system_user_pair){
+        System.out.println(system_user_pair);
+        if(systemUserPairRepository.existsByAuserid(system_user_pair.getAuserid())){
+            System.out.println(systemUserPairRepository.findByAuserid(system_user_pair.getAuserid()).getBuserid());
+            return systemUserPairRepository.findByAuserid(system_user_pair.getAuserid());
+        }else if(systemUserPairRepository.existsByBuserid(system_user_pair.getBuserid())){
+            System.out.println(systemUserPairRepository.findByBuserid(system_user_pair.getBuserid()).getAuserid());
+            return systemUserPairRepository.findByBuserid(system_user_pair.getBuserid());
+        }
+        return null;
+    }
 }

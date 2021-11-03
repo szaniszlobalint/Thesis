@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class App_User {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long ID;
     private String username;
     private String password;
@@ -26,7 +26,7 @@ public class App_User {
         return ID;
     }
 
-    public String getLogin() {
+    public String getUsername() {
         return username;
     }
 
@@ -40,7 +40,7 @@ public class App_User {
 
     @Override
     public String toString() {
-        return "com.redmine.application.myapp.entities.System{" + "ID=" + ID +  "login="+ username +"password=" +password + "}";
+        return "com.redmine.application.myapp.entities.System{" + "ID=" + ID +  "username="+ username +"password=" +password + "}";
     }
 
 

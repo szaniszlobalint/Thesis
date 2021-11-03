@@ -18,7 +18,17 @@ public class AppUserController {
     }
     @PostMapping("/login")
     public App_User loginUser(@RequestBody App_User user) {
-        return appUserRepository.findByUsername(user.getLogin());
+        try{
+            if(appUserRepository.findByUsername(user.getUsername())==null){
+                throw new IllegalArgumentException("wrong username!");
+            }else{
+                return appUserRepository.findByUsername(user.getUsername());
+            }
+        }catch (IllegalArgumentException e){
+            System.out.println("Something went wrong!");
+            return null;
+        }
+
     }
 
     @GetMapping("/getallusers")

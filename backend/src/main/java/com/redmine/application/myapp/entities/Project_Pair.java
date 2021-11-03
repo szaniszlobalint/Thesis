@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Project_Pair {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long ID;
     private long A_ProjectID;
     private long B_ProjectID;
