@@ -2,21 +2,29 @@ import { Component, OnInit } from '@angular/core';
 import {AppService} from "../services/app.service";
 import {User} from "../models/user";
 import {RedUser} from "../models/reduser";
+import {RedUserPair} from "../models/reduserpair";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.css']
 })
-export class HomeComponent implements OnInit {
+export class UsersComponent implements OnInit {
 
 
   Aredusers: RedUser[] = [];
   Bredusers: RedUser[] = [];
   allRedUsers: RedUser[] = [];
+  //redUserSelected: RedUser | null = null;
+  currentPair : RedUserPair = {
+    auserid: 0,
+    buserid: 0,
+    id: 0
+  }
 
-  constructor(private appService: AppService) { }
+  constructor(private appService: AppService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getAllRedAUsers();
@@ -49,21 +57,36 @@ export class HomeComponent implements OnInit {
   }
 
   connectUsers(AID: number, BID: number){
-    this.appService.connectUsers(AID,BID).subscribe();
+    if(AID!==null && BID!==null){
+      this.appService.connectUsers(AID,BID).then();
+    }
   }
 
-
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
+  }
 
   fillUserDatabase(users: RedUser[]){
-    this.appService.fillUserDatabase(users).subscribe();
+    this.appService.fillUserDatabase(users).then();
+  }
+
+  refreshUsers(){
+    this.appService.refreshUsers()
   }
 
 
-  blablatUsers(asd: any, basd: any) {
-    console.log(asd,basd);
+
+  async connectionChecker(auserid: number, buserid: number){
+    await this.appService.Aconnectioncheck(auserid, buserid).then(
+      pair => this.currentPair = pair
+    )
+    console.log(this.currentPair);
   }
 
-  connectionChecker(auserid: number, buserid: number){
-    this.appService.Aconnectioncheck(auserid, buserid).then(pair => console.log(pair));
-  }
+  // isBreduserselected(id: number | undefined) {
+  //   if (!this.redUserSelected) {
+  //     return false;
+  //   }
+  //   return this.redUserSelected.id === id;
+  // }
 }

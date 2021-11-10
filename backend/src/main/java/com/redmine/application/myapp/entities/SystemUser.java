@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "system_user")
-public class System_User {
+public class SystemUser {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -17,11 +17,11 @@ public class System_User {
     private long systemid;
     private long redmineid;
 
-    protected System_User() {    }
+    protected SystemUser() {    }
 
 
 
-    public System_User(long id, String firstname, String lastname, String login, String mail, boolean admin, long systemid, long redmineid) {
+    public SystemUser(long id, String firstname, String lastname, String login, String mail, boolean admin, long systemid, long redmineid) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
