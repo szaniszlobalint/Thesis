@@ -45,9 +45,4 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  getUser(){
-    this.appService.getUsers().subscribe(user => console.log(user));
-  }
-
-
 }

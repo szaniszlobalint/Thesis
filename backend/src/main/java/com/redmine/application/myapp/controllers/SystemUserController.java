@@ -31,11 +31,11 @@ public class SystemUserController {
     }
 
     @PostMapping("/updatesystemuser")
-        void addSystemUsers(@RequestBody SystemUser[] system_User){
-        for(int i=0; i<system_User.length;i++){
-            if(!systemUserRepository.existsByLoginAndSystemid(system_User[i].getLogin() , system_User[i].getSystemid())){
-                System.out.println(system_User[i]);
-                addSystemUser(system_User[i]);
+    void addSystemUsers(@RequestBody SystemUser[] system_User){
+    for(int i=0; i<system_User.length;i++){
+        if(!systemUserRepository.existsByLoginAndSystemid(system_User[i].getLogin() , system_User[i].getSystemid())){
+            System.out.println(system_User[i]);
+            addSystemUser(system_User[i]);
             }
         }
     }

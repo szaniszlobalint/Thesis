@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "project_pair")
-public class Project_Pair {
+public class ProjectPair {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -12,10 +12,10 @@ public class Project_Pair {
     private long A_ProjectID;
     private long B_ProjectID;
 
-    protected Project_Pair() {
+    protected ProjectPair() {
     }
 
-    public Project_Pair(long ID, long a_ProjectID, long b_ProjectID) {
+    public ProjectPair(long ID, long a_ProjectID, long b_ProjectID) {
         this.ID = ID;
         A_ProjectID = a_ProjectID;
         B_ProjectID = b_ProjectID;

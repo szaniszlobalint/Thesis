@@ -1,6 +1,6 @@
 package com.redmine.application.myapp.controllers;
 
-import com.redmine.application.myapp.entities.App_User;
+import com.redmine.application.myapp.entities.AppUser;
 import com.redmine.application.myapp.repositories.AppUserRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,7 +17,7 @@ public class AppUserController {
         this.appUserRepository = appUserRepository;
     }
     @PostMapping("/login")
-    public App_User loginUser(@RequestBody App_User user) {
+    public AppUser loginUser(@RequestBody AppUser user) {
         try{
             if(appUserRepository.findByUsername(user.getUsername())==null){
                 throw new IllegalArgumentException("wrong username!");
@@ -32,12 +32,12 @@ public class AppUserController {
     }
 
     @GetMapping("/getallusers")
-    public List<App_User> getAppUsers() {
-        return (List<App_User>) appUserRepository.findAll();
+    public List<AppUser> getAppUsers() {
+        return (List<AppUser>) appUserRepository.findAll();
     }
 
     @PostMapping("/saveappuser")
-    void addProjecct(@RequestBody App_User app_user) {
+    void addProjecct(@RequestBody AppUser app_user) {
         appUserRepository.save(app_user);
     }
 }

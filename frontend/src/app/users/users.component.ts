@@ -13,80 +13,74 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class UsersComponent implements OnInit {
 
-
-  Aredusers: RedUser[] = [];
-  Bredusers: RedUser[] = [];
   allRedUsers: RedUser[] = [];
-  //redUserSelected: RedUser | null = null;
-  currentPair : RedUserPair = {
-    auserid: 0,
-    buserid: 0,
-    id: 0
-  }
+  aUserID: number = 0;
+
+  aRedUserModel: any = [];
+  bRedUserModel: any = [];
+
+  currentPairs : RedUserPair[] = [];
+
 
   constructor(private appService: AppService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.getAllRedAUsers();
-    this.getAllRedBUsers();
     this.getAllRedUsers();
-  }
-
- async getAllRedAUsers(){
-    await this.appService.getRedAUsers().then(users => this.Aredusers = users);
-    for(let i=0; i < this.Aredusers.length; i++){
-      this.Aredusers[i].systemid=1;
-      this.Aredusers[i].redmineid=this.Aredusers[i].id;
-      this.Aredusers[i].id=undefined;
-    }
-    this.fillUserDatabase(this.Aredusers);
-  }
-
-  async getAllRedBUsers(){
-    await this.appService.getRedBUsers().then(users => this.Bredusers = users);
-    for(let i=0; i < this.Bredusers.length; i++){
-      this.Bredusers[i].systemid=2;
-      this.Bredusers[i].redmineid=this.Bredusers[i].id;
-      this.Bredusers[i].id=undefined;
-    }
-    this.fillUserDatabase(this.Bredusers);
+    this.getUserPairs();
   }
 
   getAllRedUsers(){
     this.appService.getAllRedUsers().then(users => this.allRedUsers = users);
   }
 
-  connectUsers(AID: number, BID: number){
+  async getUserPairs(){
+    this.currentPairs = await this.appService.getUserPairs();
+    console.log(this.currentPairs);
+  }
+
+  connectSelectedUsers(AID: number, BID: number){
+    console.log(this.bRedUserModel);
+    //const AID = this.bRedUserModel[0].id;
     if(AID!==null && BID!==null){
-      this.appService.connectUsers(AID,BID).then();
+      this.appService.connectUsers(AID,this.bRedUserModel[0]).then();
     }
   }
 
   openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action);
+    this._snackBar.open(message, action,{
+      duration:  2000
+    });
+
   }
 
-  fillUserDatabase(users: RedUser[]){
-    this.appService.fillUserDatabase(users).then();
-  }
-
-  refreshUsers(){
-    this.appService.refreshUsers()
+  async refreshUsers(){
+    await this.appService.refreshUsers();
+    this.getAllRedUsers();
   }
 
 
-
-  async connectionChecker(auserid: number, buserid: number){
-    await this.appService.Aconnectioncheck(auserid, buserid).then(
-      pair => this.currentPair = pair
-    )
-    console.log(this.currentPair);
-  }
-
-  // isBreduserselected(id: number | undefined) {
-  //   if (!this.redUserSelected) {
-  //     return false;
+  // async connectionChecker(auserid: number, buserid: number){
+  //   this.currentPair = await this.appService.connectionChecker(auserid, buserid);
+  //   if(this.currentPair?.buserid !== null && this.currentPair?.buserid !== undefined
+  //     && this.currentPair?.auserid !== null && this.currentPair?.auserid !== undefined) {
+  //     this.bRedUserModel = [this.currentPair.buserid];
+  //     this.aRedUserModel = [this.currentPair.auserid];
   //   }
-  //   return this.redUserSelected.id === id;
+  //
+  //   console.log(this.currentPair);
+  //   console.log(this.bRedUserModel);
   // }
+
+  deleteConnection(auserid: number, buserid: number) {
+    this.appService.deleteConnection(auserid, buserid).then();
+  }
+
+  checkIsDisabled(num: number){
+    let res = false;
+    if(this.currentPairs.find(x => x.buserid===num)!==null){
+      res = true;
+    }
+    return res;
+  }
+
 }

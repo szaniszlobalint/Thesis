@@ -1,6 +1,6 @@
 package com.redmine.application.myapp.controllers;
 
-import com.redmine.application.myapp.entities.Stored_System;
+import com.redmine.application.myapp.entities.StoredSystem;
 import com.redmine.application.myapp.repositories.SystemRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,12 +19,12 @@ public class StoredSystemController {
 
 
     @GetMapping("/storedsystem")
-    public List<Stored_System> getStoredSystems() {
-        return (List<Stored_System>) systemRepository.findAll();
+    public List<StoredSystem> getStoredSystems() {
+        return (List<StoredSystem>) systemRepository.findAll();
     }
 
     @PostMapping("/savestoredsystem")
-    void addProjecct(@RequestBody Stored_System stored_system) {
+    void addProjecct(@RequestBody StoredSystem stored_system) {
         systemRepository.save(stored_system);
     }
 }

@@ -1,6 +1,6 @@
 package com.redmine.application.myapp.controllers;
 
-import com.redmine.application.myapp.entities.System_Pair;
+import com.redmine.application.myapp.entities.SystemPair;
 import com.redmine.application.myapp.repositories.SystemPairRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,13 +20,13 @@ public class SystemPairController {
 
 
     @GetMapping("/systempair")
-    public List<System_Pair> getSystemPairs() {
-        return (List<System_Pair>) systemPairRepository.findAll();
+    public List<SystemPair> getSystemPairs() {
+        return (List<SystemPair>) systemPairRepository.findAll();
 
     }
 
     @PostMapping("/savesystempair")
-    void addProjecct(@RequestBody System_Pair system_Pair) {
+    void addProjecct(@RequestBody SystemPair system_Pair) {
         systemPairRepository.save(system_Pair);
     }
 

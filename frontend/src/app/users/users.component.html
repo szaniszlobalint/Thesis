@@ -13,11 +13,9 @@
 <!--</mat-autocomplete>-->
 
 
-
-
-<mat-selection-list #Areduserselect [multiple]="false">
+<mat-selection-list #Areduserselect [multiple]="false" [(ngModel)]="aRedUserModel">
   <div *ngFor="let user of allRedUsers">
-  <mat-list-option [selected]="currentPair !== null && user.id === currentPair.auserid " (click)="connectionChecker(user.id!, 0)" *ngIf="user.systemid===1 && user.login!==''" [value]="user">
+  <mat-list-option (click)="aUserID=user.id!" *ngIf="user.systemid===1 && user.login!==''" [value]="user.id">
     {{user.login}}
   </mat-list-option>
   </div>
@@ -28,9 +26,9 @@
 <!--  Selected User: {{Areduserselect.selectedOptions.selected[0]?.value.login}}-->
 <!--</p>-->
 <hr>
-<mat-selection-list #Breduserselect [multiple]="false">
+<mat-selection-list #Breduserselect [multiple]="false" [(ngModel)]="bRedUserModel">
   <div *ngFor="let user of allRedUsers">
-  <mat-list-option [selected]="currentPair!==null && user.id === currentPair.buserid " (click)="connectionChecker(0, user.id!)" *ngIf="user.systemid===2 && user.login!==''" [value]="user">
+  <mat-list-option [disabled]="aUserID===0 || checkIsDisabled(user.id!)"  *ngIf="user.systemid===2 && user.login!==''" [value]="user.id">
     {{user.login}}
   </mat-list-option>
   </div>
@@ -40,6 +38,9 @@
 <!--<p>-->
 <!--  Selected User: {{Breduserselect.selectedOptions.selected[0]?.value.login}}-->
 <!--</p>-->
-<button [disabled]="currentPair!==null" mat-raised-button color="primary" (click)="connectUsers(Areduserselect.selectedOptions.selected[0]?.value.id,Breduserselect.selectedOptions.selected[0]?.value.id);openSnackBar('Successful connection!', 'Ok')" type="button">Connect</button>
-<button mat-raised-button color="primary" (click)="refreshUsers()">Refresh</button>
+<!--<button [disabled]="currentPair!==null" mat-raised-button color="primary"-->
+<!--        (click)="connectSelectedUsers(Areduserselect.selectedOptions.selected[0]?.value.id,Breduserselect.selectedOptions.selected[0]?.value.id);openSnackBar('Successful connection!', 'Ok')" type="button">Connect</button>-->
+<!--<button mat-raised-button color="primary" (click)="refreshUsers()" type="button">Refresh</button>-->
+<!--<button [disabled]="currentPair===null" mat-raised-button color="primary"-->
+<!--        (click)="deleteConnection(currentPair.auserid,currentPair.buserid);openSnackBar('Successful deletion!', 'Ok')" type="button">Delete Connection</button>-->
 

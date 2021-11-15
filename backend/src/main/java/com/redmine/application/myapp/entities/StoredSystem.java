@@ -4,16 +4,16 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "system")
-public class Stored_System {
+public class StoredSystem {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long ID;
     private String type;
 
-    protected Stored_System() {    }
+    protected StoredSystem() {    }
 
-    public Stored_System(long ID, String type) {
+    public StoredSystem(long ID, String type) {
         this.ID = ID;
         this.type = type;
     }

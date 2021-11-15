@@ -32,6 +32,14 @@ public class SystemUser {
         this.redmineid = redmineid;
     }
 
+    public SystemUser(String firstname, String lastname, String login, long systemid, long redmineid) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.login = login;
+        this.systemid = systemid;
+        this.redmineid = redmineid;
+    }
+
     public long getId() {
         return id;
     }

@@ -1,6 +1,6 @@
 package com.redmine.application.myapp.controllers;
 
-import com.redmine.application.myapp.entities.System_User_Pair;
+import com.redmine.application.myapp.entities.SystemUserPair;
 import com.redmine.application.myapp.repositories.SystemUserPairRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,20 +19,23 @@ public class SystemUserPairController {
 
 
     @GetMapping("/systemuserpair")
-    public List<System_User_Pair> getSystemUserPairs() {
-        return (List<System_User_Pair>) systemUserPairRepository.findAll();
+    public List<SystemUserPair> getSystemUserPairs() {
+        return (List<SystemUserPair>) systemUserPairRepository.findAll();
 
     }
 
     @PostMapping("/savesystemuserpair")
-    void addSystemUserPairs(@RequestBody System_User_Pair system_User_Pair) {
-        System.out.println(system_User_Pair);
+    void addSystemUserPairs(@RequestBody SystemUserPair system_User_Pair) {
         systemUserPairRepository.save(system_User_Pair);
     }
 
+    @PostMapping("/deletesystemuserpair")
+    void deleteSystemUserPair(@RequestBody SystemUserPair systemUserPair){
+        systemUserPairRepository.delete(systemUserPairRepository.findByAuseridAndBuserid(systemUserPair.getAuserid(),systemUserPair.getBuserid()));
+    }
+
     @PostMapping("/checksystemuserpairs")
-    System_User_Pair checkPairs(@RequestBody System_User_Pair system_user_pair){
-        System.out.println(system_user_pair);
+    SystemUserPair checkPairs(@RequestBody SystemUserPair system_user_pair){
         if(systemUserPairRepository.existsByAuserid(system_user_pair.getAuserid())){
             System.out.println(systemUserPairRepository.findByAuserid(system_user_pair.getAuserid()).getBuserid());
             return systemUserPairRepository.findByAuserid(system_user_pair.getAuserid());

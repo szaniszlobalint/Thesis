@@ -1,12 +1,12 @@
 package com.redmine.application.myapp.repositories;
 
-import com.redmine.application.myapp.entities.App_User;
+import com.redmine.application.myapp.entities.AppUser;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AppUserRepository extends CrudRepository<App_User, Long> {
+public interface AppUserRepository extends CrudRepository<AppUser, Long> {
 
-    App_User findByUsername(String username);
+    AppUser findByUsername(String username);
 
 }

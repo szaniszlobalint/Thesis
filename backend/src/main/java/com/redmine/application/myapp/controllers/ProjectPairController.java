@@ -1,6 +1,6 @@
 package com.redmine.application.myapp.controllers;
 
-import com.redmine.application.myapp.entities.Project_Pair;
+import com.redmine.application.myapp.entities.ProjectPair;
 import com.redmine.application.myapp.repositories.ProjectPairRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,13 +19,13 @@ public class ProjectPairController {
 
 
     @GetMapping("/projectpair")
-    public List<Project_Pair> getProjectPairs() {
-        return (List<Project_Pair>) projectPairRepository.findAll();
+    public List<ProjectPair> getProjectPairs() {
+        return (List<ProjectPair>) projectPairRepository.findAll();
 
     }
 
     @PostMapping("/saveprojectpair")
-    void addProjecPair(@RequestBody Project_Pair projectPair) {
+    void addProjecPair(@RequestBody ProjectPair projectPair) {
         projectPairRepository.save(projectPair);
     }
 }

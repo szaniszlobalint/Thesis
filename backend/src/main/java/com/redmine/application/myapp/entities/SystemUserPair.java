@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "system_user_pair")
-public class System_User_Pair {
+public class SystemUserPair {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -12,9 +12,9 @@ public class System_User_Pair {
     private long auserid;
     private long buserid;
 
-    protected System_User_Pair() {    }
+    protected SystemUserPair() {    }
 
-    public System_User_Pair(long id, long auserid, long buserid) {
+    public SystemUserPair(long id, long auserid, long buserid) {
         this.id = id;
         this.auserid = auserid;
         this.buserid = buserid;

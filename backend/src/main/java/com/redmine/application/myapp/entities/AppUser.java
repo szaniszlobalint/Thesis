@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "app_user")
-public class App_User {
+public class AppUser {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -13,9 +13,9 @@ public class App_User {
     private String password;
     private String mail;
 
-    protected App_User() {    }
+    protected AppUser() {    }
 
-    public App_User(long ID, String username, String password, String mail) {
+    public AppUser(long ID, String username, String password, String mail) {
         this.ID = ID;
         this.username = username;
         this.password = password;

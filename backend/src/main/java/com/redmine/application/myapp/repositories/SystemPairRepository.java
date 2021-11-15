@@ -1,8 +1,8 @@
 package com.redmine.application.myapp.repositories;
 
-import com.redmine.application.myapp.entities.System_Pair;
+import com.redmine.application.myapp.entities.SystemPair;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SystemPairRepository extends CrudRepository<System_Pair, Long> {}
+public interface SystemPairRepository extends CrudRepository<SystemPair, Long> {}

@@ -1,14 +1,16 @@
 package com.redmine.application.myapp.repositories;
 
-import com.redmine.application.myapp.entities.System_User_Pair;
+import com.redmine.application.myapp.entities.SystemUserPair;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SystemUserPairRepository extends CrudRepository<System_User_Pair, Long> {
+public interface SystemUserPairRepository extends CrudRepository<SystemUserPair, Long> {
 
     boolean existsByAuserid(long num);
     boolean existsByBuserid(long num);
-    System_User_Pair findByAuserid(long num);
-    System_User_Pair findByBuserid(long num);
+    SystemUserPair findByAuserid(long num);
+    SystemUserPair findByBuserid(long num);
+    SystemUserPair findByAuseridAndBuserid(long num1, long num2);
+
 }
