@@ -12,6 +12,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatCardModule} from "@angular/material/card";
+
 
 
 
@@ -21,19 +24,21 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     LoginComponent,
     UsersComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatListModule,
-        BrowserAnimationsModule,
-        MatInputModule,
-        FormsModule,
-        MatButtonModule,
-        MatSnackBarModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatListModule,
+    BrowserAnimationsModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatCardModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

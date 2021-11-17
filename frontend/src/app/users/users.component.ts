@@ -4,6 +4,7 @@ import {User} from "../models/user";
 import {RedUser} from "../models/reduser";
 import {RedUserPair} from "../models/reduserpair";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {interval, Subscription} from "rxjs";
 
 
 @Component({
@@ -13,8 +14,10 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class UsersComponent implements OnInit {
 
+  value = 0;
+  loading = false;
+
   allRedUsers: RedUser[] = [];
-  aUserID: number = 0;
 
   aRedUserModel: any = [];
   bRedUserModel: any = [];
@@ -35,14 +38,17 @@ export class UsersComponent implements OnInit {
 
   async getUserPairs(){
     this.currentPairs = await this.appService.getUserPairs();
-    console.log(this.currentPairs);
+  }
+
+  logPairs(){
+    console.log(this.aRedUserModel,this.bRedUserModel);
   }
 
   connectSelectedUsers(AID: number, BID: number){
     console.log(this.bRedUserModel);
     //const AID = this.bRedUserModel[0].id;
     if(AID!==null && BID!==null){
-      this.appService.connectUsers(AID,this.bRedUserModel[0]).then();
+      this.appService.connectUsers(this.aRedUserModel[0],this.bRedUserModel[0]).then();
     }
   }
 
@@ -54,8 +60,25 @@ export class UsersComponent implements OnInit {
   }
 
   async refreshUsers(){
+    this.loading = true;
     await this.appService.refreshUsers();
     this.getAllRedUsers();
+    this.loading = false;
+  }
+
+  pairFinder(aId: number | undefined): void{
+    if(aId === undefined) {
+      return;
+    }
+    for(let i = 0; i < this.currentPairs.length; i++) {
+      if (this.currentPairs[i].auserid === aId) {
+        this.bRedUserModel = [this.currentPairs[i].buserid];
+        break;
+      }
+      else if(this.bCheckIsDisabled(this.bRedUserModel[0])) {
+        this.bRedUserModel = [] ;
+      }
+    }
   }
 
 
@@ -75,12 +98,28 @@ export class UsersComponent implements OnInit {
     this.appService.deleteConnection(auserid, buserid).then();
   }
 
-  checkIsDisabled(num: number){
+  aCheckIsDisabled(num: number){
     let res = false;
-    if(this.currentPairs.find(x => x.buserid===num)!==null){
-      res = true;
+    for(let i = 0; i < this.currentPairs.length; i++) {
+      if (this.currentPairs[i].auserid === num) {
+        res = true;
+      }
     }
     return res;
   }
+
+  bCheckIsDisabled(num: number){
+    let res = false;
+    for(let i = 0; i < this.currentPairs.length; i++) {
+      if (this.currentPairs[i].buserid === num) {
+        res = true;
+      }
+    }
+    return res;
+  }
+
+
+
+
 
 }

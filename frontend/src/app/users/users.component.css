@@ -1,0 +1,56 @@
+mat-list-option[aria-selected="true"] {
+  background: rgba(0, 139, 139, 0.7);
+}
+
+
+/*mat-list-option[ng-reflect-disabled="true"] {*/
+/*  background: rgba(107, 101, 100, 0.2);*/
+/*}*/
+
+mat-list-option {
+  position: relative;
+  z-index: 1;
+}
+
+.spinner__loading {
+  position: relative;
+  justify-content: center;
+  z-index: 10;
+}
+
+.aCard{
+  width: 400px;
+  margin-right: 2rem;
+}
+
+.bCard{
+  width: 400px;
+  margin-left: 2rem;
+}
+
+.SelectList{
+  width: 400px;
+  overflow: auto;
+}
+
+.list-container {
+  margin-top: 10rem;
+  display: flex;
+
+}
+
+.button-positioning{
+  display: flex;
+}
+
+.user-connection-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button-margin{
+  margin: 1rem;
+}
+
+

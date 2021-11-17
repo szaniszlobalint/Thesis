@@ -11,36 +11,66 @@
 <!--    {{option}}-->
 <!--  </mat-option>-->
 <!--</mat-autocomplete>-->
+<div class="user-connection-container">
+  <div class="list-container">
+    <mat-card class="aCard">
+      <mat-card-content>
+        <mat-selection-list [multiple]="false" [(ngModel)]="aRedUserModel" class="SelectList">
+          <div *ngFor="let user of allRedUsers">
+          <mat-list-option (click)=" pairFinder(user.id);logPairs()" *ngIf="user.systemid===1 && user.login!==''" [value]="user.id">
+            {{user.login}}
+          </mat-list-option>
+          </div>
+        </mat-selection-list>
+      </mat-card-content>
+    </mat-card>
 
-
-<mat-selection-list #Areduserselect [multiple]="false" [(ngModel)]="aRedUserModel">
-  <div *ngFor="let user of allRedUsers">
-  <mat-list-option (click)="aUserID=user.id!" *ngIf="user.systemid===1 && user.login!==''" [value]="user.id">
-    {{user.login}}
-  </mat-list-option>
+    <mat-card class="bCard">
+      <mat-card-content>
+        <mat-selection-list [multiple]="false" [(ngModel)]="bRedUserModel" class="SelectList">
+          <div *ngFor="let user of allRedUsers">
+          <mat-list-option [disabled]="aRedUserModel.length === 0 || bCheckIsDisabled(user.id!)" (click)="logPairs()" *ngIf="user.systemid===2 && user.login!==''" [value]="user.id">
+            {{user.login}}
+          </mat-list-option>
+          </div>
+        </mat-selection-list>
+      </mat-card-content>
+    </mat-card>
   </div>
-</mat-selection-list>
+  <div class="button-positioning">
+    <button [disabled]="aRedUserModel.length === 0 || bRedUserModel.length === 0 || aCheckIsDisabled(aRedUserModel[0]) || bCheckIsDisabled(bRedUserModel[0])"
+            mat-raised-button color="primary"
+            (click)="connectSelectedUsers(aRedUserModel[0], bRedUserModel[0]);
+          openSnackBar('Successful connection!', 'Ok'); getUserPairs()" type="button" class="button-margin">Connect</button>
+
+    <button [disabled]="aRedUserModel.length === 0 || bRedUserModel.length === 0 || !aCheckIsDisabled(aRedUserModel[0]) || !bCheckIsDisabled(bRedUserModel[0])"
+            mat-raised-button color="primary"
+            (click)="deleteConnection(aRedUserModel[0],bRedUserModel[0]);openSnackBar('Successful deletion!', 'Ok'); getUserPairs()"
+            type="button" class="button-margin">Delete Connection</button>
+
+    <button mat-raised-button color="primary"  (click)="refreshUsers()" type="button" class="button-margin">Refresh</button>
+
+
+      <div class="spinner">
+        <mat-progress-spinner
+          diameter="60"
+          [value]="value"
+          mode="indeterminate">
+        </mat-progress-spinner>
+      </div>
+
+  </div>
+</div>
 
 
 <!--<p>-->
 <!--  Selected User: {{Areduserselect.selectedOptions.selected[0]?.value.login}}-->
 <!--</p>-->
-<hr>
-<mat-selection-list #Breduserselect [multiple]="false" [(ngModel)]="bRedUserModel">
-  <div *ngFor="let user of allRedUsers">
-  <mat-list-option [disabled]="aUserID===0 || checkIsDisabled(user.id!)"  *ngIf="user.systemid===2 && user.login!==''" [value]="user.id">
-    {{user.login}}
-  </mat-list-option>
-  </div>
-</mat-selection-list>
-
-
 <!--<p>-->
 <!--  Selected User: {{Breduserselect.selectedOptions.selected[0]?.value.login}}-->
 <!--</p>-->
-<!--<button [disabled]="currentPair!==null" mat-raised-button color="primary"-->
-<!--        (click)="connectSelectedUsers(Areduserselect.selectedOptions.selected[0]?.value.id,Breduserselect.selectedOptions.selected[0]?.value.id);openSnackBar('Successful connection!', 'Ok')" type="button">Connect</button>-->
-<!--<button mat-raised-button color="primary" (click)="refreshUsers()" type="button">Refresh</button>-->
-<!--<button [disabled]="currentPair===null" mat-raised-button color="primary"-->
-<!--        (click)="deleteConnection(currentPair.auserid,currentPair.buserid);openSnackBar('Successful deletion!', 'Ok')" type="button">Delete Connection</button>-->
+
+
+
+
 
