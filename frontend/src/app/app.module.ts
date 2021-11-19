@@ -15,6 +15,11 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatCardModule} from "@angular/material/card";
 import { UserSubComponent } from './users/user-sub/user-sub.component';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { HomeComponent } from './home/home.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatSelectModule} from "@angular/material/select";
+import { ProjectsComponent } from './projects/projects.component';
 
 
 
@@ -24,7 +29,10 @@ import { UserSubComponent } from './users/user-sub/user-sub.component';
     AppComponent,
     LoginComponent,
     UsersComponent,
-    UserSubComponent
+    UserSubComponent,
+    NavBarComponent,
+    HomeComponent,
+    ProjectsComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +47,9 @@ import { UserSubComponent } from './users/user-sub/user-sub.component';
     MatButtonModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    MatCardModule
+    MatCardModule,
+    MatToolbarModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

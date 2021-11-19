@@ -1,0 +1,18 @@
+.system-selectors {
+  display: flex;
+  justify-content: center;
+  margin-top: 13%;
+}
+
+.a-selector {
+  margin-right: 3rem;
+}
+
+.b-selector {
+  margin-left: 3rem;
+}
+
+.system-selectors-button {
+  margin-top: 1rem;
+  margin-left: 1rem;
+}

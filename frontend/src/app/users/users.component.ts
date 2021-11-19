@@ -8,7 +8,7 @@ import {interval, Subscription} from "rxjs";
 
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css']
 })
@@ -40,14 +40,10 @@ export class UsersComponent implements OnInit {
     this.currentPairs = await this.appService.getUserPairs();
   }
 
-  logPairs(){
-    console.log(this.aRedUserModel,this.bRedUserModel);
-  }
 
   async connectSelectedUsers(AID: number, BID: number){
     console.log(this.bRedUserModel);
-    //const AID = this.bRedUserModel[0].id;
-    if(AID!==null && BID!==null){
+      if(AID!==null && BID!==null){
       await this.appService.connectUsers(this.aRedUserModel[0],this.bRedUserModel[0]);
       await this.getUserPairs();
       this.openSnackBar('Successful connection!', 'Ok');
@@ -76,11 +72,14 @@ export class UsersComponent implements OnInit {
     for(let i = 0; i < this.currentPairs.length; i++) {
       if (this.currentPairs[i].auserid === aId) {
         this.bRedUserModel = [this.currentPairs[i].buserid];
-        break;
+        return;
       }
       else if(this.bCheckIsDisabled(this.bRedUserModel[0])) {
-        this.bRedUserModel = [] ;
+        this.bRedUserModel = [];
       }
+    }
+    if(!this.aCheckIsDisabled(this.aRedUserModel[0])) {
+      this.bRedUserModel = [];
     }
   }
 

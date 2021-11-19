@@ -17,7 +17,7 @@
       <mat-card-content>
         <mat-selection-list [multiple]="false" [(ngModel)]="aRedUserModel" class="SelectList">
           <div *ngFor="let user of allRedUsers">
-          <mat-list-option (click)=" pairFinder(user.id)" *ngIf="user.systemid===1 && user.login!==''" [value]="user.id">
+          <mat-list-option (click)="pairFinder(user.id)" *ngIf="user.systemid===1 && user.login!==''" [value]="user.id">
             {{user.login}}
           </mat-list-option>
           </div>

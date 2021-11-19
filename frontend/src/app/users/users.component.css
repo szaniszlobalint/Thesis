@@ -12,12 +12,6 @@ mat-list-option {
   z-index: 1;
 }
 
-.spinner__loading {
-  position: relative;
-  justify-content: center;
-  z-index: 10;
-}
-
 .aCard{
   width: 400px;
   margin-right: 2rem;

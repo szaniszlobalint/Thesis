@@ -1,0 +1,9 @@
+<mat-toolbar color="primary" class="tool-bar">
+  <span>Redmine-Webapplication</span>
+  <img src="redminelogo.png" alt="">
+  <button mat-raised-button color="accent" routerLink="/users" type="button">Users</button>
+  <button mat-raised-button color="accent" routerLink="/projects" type="button">Projects</button>
+</mat-toolbar>
+
+<app-home (sendSystems)="fillSystemNames($event)"></app-home>
+<h1>{{firstSystem + ' - '}}{{secondSystem}}</h1>

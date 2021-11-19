@@ -1,0 +1,28 @@
+<div class="system-selectors">
+  <mat-form-field appearance="fill" class="a-selector" >
+    <mat-label>Choose System</mat-label>
+    <mat-select [(ngModel)]="firstSystem">
+      <div *ngFor="let system of systemArray">
+        <mat-option *ngIf="system.id !== 2" [value]="system.name">
+          {{system.name}}
+        </mat-option>
+      </div>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="b-selector">
+    <mat-label>Chosen System</mat-label>
+    <mat-select [(ngModel)]="secondSystem">
+      <div *ngFor="let system of systemArray">
+        <mat-option *ngIf="system.id === 2" [value]="system.name">
+          {{system.name}}
+        </mat-option>
+      </div>
+    </mat-select>
+  </mat-form-field>
+  <div class="system-selectors-button">
+    <button mat-raised-button color="accent" [disabled]="firstSystem === null || secondSystem === null" (click)="pairSystems(firstSystem,secondSystem)" type="button">Connect</button>
+  </div>
+</div>
+
+
