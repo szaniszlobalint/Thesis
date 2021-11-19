@@ -4,18 +4,20 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "system")
-public class StoredSystem {
+public class RedSystem {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long ID;
     private String type;
+    private String name;
 
-    protected StoredSystem() {    }
+    protected RedSystem() {    }
 
-    public StoredSystem(long ID, String type) {
+    public RedSystem(long ID, String type, String name) {
         this.ID = ID;
         this.type = type;
+        this.type = name;
     }
 
     public long getId() {
@@ -26,9 +28,11 @@ public class StoredSystem {
         return type;
     }
 
+    public String getName() { return name; }
+
     @Override
     public String toString() {
-        return "com.redmine.application.myapp.entities.System{" + "ID=" + ID + ", name=" + type + "}";
+        return "com.redmine.application.myapp.entities.System{" + "ID=" + ID + ", name=" + type + ", name=" + name + "}";
     }
 
 

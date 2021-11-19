@@ -16,6 +16,7 @@ public class AppUserController {
     public AppUserController(AppUserRepository appUserRepository) {
         this.appUserRepository = appUserRepository;
     }
+
     @PostMapping("/login")
     public AppUser loginUser(@RequestBody AppUser user) {
         try{
