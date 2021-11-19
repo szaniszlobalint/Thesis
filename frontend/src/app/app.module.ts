@@ -14,6 +14,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatCardModule} from "@angular/material/card";
+import { UserSubComponent } from './users/user-sub/user-sub.component';
 
 
 
@@ -22,7 +23,8 @@ import {MatCardModule} from "@angular/material/card";
   declarations: [
     AppComponent,
     LoginComponent,
-    UsersComponent
+    UsersComponent,
+    UserSubComponent
   ],
   imports: [
     BrowserModule,

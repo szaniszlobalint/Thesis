@@ -15,7 +15,7 @@ import {interval, Subscription} from "rxjs";
 export class UsersComponent implements OnInit {
 
   value = 0;
-  loading = false;
+  //loading = false;
 
   allRedUsers: RedUser[] = [];
 
@@ -44,11 +44,13 @@ export class UsersComponent implements OnInit {
     console.log(this.aRedUserModel,this.bRedUserModel);
   }
 
-  connectSelectedUsers(AID: number, BID: number){
+  async connectSelectedUsers(AID: number, BID: number){
     console.log(this.bRedUserModel);
     //const AID = this.bRedUserModel[0].id;
     if(AID!==null && BID!==null){
-      this.appService.connectUsers(this.aRedUserModel[0],this.bRedUserModel[0]).then();
+      await this.appService.connectUsers(this.aRedUserModel[0],this.bRedUserModel[0]);
+      await this.getUserPairs();
+      this.openSnackBar('Successful connection!', 'Ok');
     }
   }
 
@@ -60,10 +62,11 @@ export class UsersComponent implements OnInit {
   }
 
   async refreshUsers(){
-    this.loading = true;
+   // this.loading = true;
     await this.appService.refreshUsers();
-    this.getAllRedUsers();
-    this.loading = false;
+    await this.getAllRedUsers();
+    this.openSnackBar("Users refreshed!", "Ok");
+   // this.loading = false;
   }
 
   pairFinder(aId: number | undefined): void{
@@ -94,8 +97,11 @@ export class UsersComponent implements OnInit {
   //   console.log(this.bRedUserModel);
   // }
 
-  deleteConnection(auserid: number, buserid: number) {
-    this.appService.deleteConnection(auserid, buserid).then();
+  async deleteConnection(auserid: number, buserid: number) {
+    await this.appService.deleteConnection(auserid, buserid);
+    await this.getUserPairs();
+    this.bRedUserModel = [];
+    this.openSnackBar('Successful deletion!', 'Ok');
   }
 
   aCheckIsDisabled(num: number){
@@ -118,7 +124,9 @@ export class UsersComponent implements OnInit {
     return res;
   }
 
-
+  addItem(newItem: string) {
+    console.log(newItem + ' Received');
+  }
 
 
 

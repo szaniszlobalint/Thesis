@@ -1,8 +1,11 @@
 package com.redmine.application.myapp.controllers;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redmine.application.myapp.entities.SystemUser;
+import com.redmine.application.myapp.entities.RedmineOriginal;
 import com.redmine.application.myapp.repositories.SystemUserRepository;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -33,6 +36,9 @@ import org.apache.log4j.Logger;
 @CrossOrigin(origins = "http://localhost:4200")
 public class RefreshController {
 
+    ObjectMapper objectMapper = new ObjectMapper();
+    //objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
     static final Logger logger = Logger.getLogger(RefreshController.class);
 
     private final SystemUserRepository systemUserRepository;
@@ -50,7 +56,7 @@ public class RefreshController {
     @GetMapping("/refresh")
     public void RefreshList() throws IOException {
         try{
-            BasicConfigurator.configure();
+            logger.info("RefreshList called");
             CredentialsProvider provider = new BasicCredentialsProvider();
             UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("admin", "12345678");
             provider.setCredentials(AuthScope.ANY, credentials);
@@ -67,15 +73,14 @@ public class RefreshController {
 
             JSONObject myObject = new JSONObject(EntityUtils.toString(entity));
 
-           //ObjectMapper objectMapper = new ObjectMapper();
-            //List<SystemUser> systemUserList = objectMapper.readValue(myObject, new TypeReference<List<SystemUser>>(){});
+            List<RedmineOriginal> redmineUserList = objectMapper.readValue(myObject.getString("users"), new TypeReference<List<RedmineOriginal>>(){});
 
-            JSONArray ArrayOfJsons = myObject.getJSONArray("users");
-
-            for(int i = 0; i < ArrayOfJsons.length(); i++) {
-                JSONObject objects = ArrayOfJsons.getJSONObject(i);
-                SystemUser systemUser = new SystemUser(objects.get("firstname").toString(),objects.get("lastname").toString(),
-                        objects.get("login").toString(),1, Integer.parseInt(objects.get("id").toString()));
+            //JSONArray ArrayOfJsons = myObject.getJSONArray("users");
+            for (RedmineOriginal redmineUser : redmineUserList) {
+                //logger.info(systemUserList.get(i));
+                //JSONObject objects = ArrayOfJsons.getJSONObject(i);
+                SystemUser systemUser = new SystemUser(redmineUser.getFirstname(), redmineUser.getLastname(),
+                        redmineUser.getLogin(), 1, redmineUser.getId());
                 addSystemUser(systemUser);
             }
 
@@ -87,12 +92,14 @@ public class RefreshController {
 
             myObject = new JSONObject(EntityUtils.toString(entity));
 
-            ArrayOfJsons = myObject.getJSONArray("users");
+            redmineUserList = objectMapper.readValue(myObject.getString("users"), new TypeReference<List<RedmineOriginal>>(){});
 
-            for(int i = 0; i < ArrayOfJsons.length(); i++) {
-                JSONObject objects = ArrayOfJsons.getJSONObject(i);
-                SystemUser systemUser = new SystemUser(objects.get("firstname").toString(),objects.get("lastname").toString(),
-                        objects.get("login").toString(),2, Integer.parseInt(objects.get("id").toString()));
+            //ArrayOfJsons = myObject.getJSONArray("users");
+
+            for (RedmineOriginal redmineUser : redmineUserList) {
+                //JSONObject objects = ArrayOfJsons.getJSONObject(i);
+                SystemUser systemUser = new SystemUser(redmineUser.getFirstname(), redmineUser.getLastname(),
+                        redmineUser.getLogin(), 2, redmineUser.getId());
                 addSystemUser(systemUser);
             }
 

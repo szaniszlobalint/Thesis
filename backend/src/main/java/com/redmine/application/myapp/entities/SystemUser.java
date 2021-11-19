@@ -1,5 +1,7 @@
 package com.redmine.application.myapp.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
