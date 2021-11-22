@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {AppService} from "../services/app.service";
 import {RedSystem} from "../models/redsystem";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-home',
@@ -15,8 +16,6 @@ export class HomeComponent implements OnInit {
   systemArray: RedSystem[] = [];
   systemsForNav: string[] = [];
 
-  @Output() sendSystems = new EventEmitter<string[]>();
-
   constructor(private appService: AppService) { }
 
   ngOnInit(): void {
@@ -30,7 +29,6 @@ export class HomeComponent implements OnInit {
   pairSystems(firstSystem: string, secondSystem: string) {
     this.systemsForNav[0] = firstSystem;
     this.systemsForNav[1] = secondSystem;
-    this.sendSystems.emit(this.systemsForNav);
-
+    this.appService.sendSystems(this.systemsForNav);
   }
 }

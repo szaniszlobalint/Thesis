@@ -1,5 +1,5 @@
 export interface RedSystem {
-  id: number;
+  id?: number;
   type: string;
   name: string;
 }
