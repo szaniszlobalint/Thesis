@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AppService} from "../services/app.service";
 import {RedUser} from "../models/reduser";
-import {RedUserPair} from "../models/reduserpair";
+import {RedPair} from "../models/redpair";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 
@@ -12,11 +12,13 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class UsersComponent implements OnInit {
   allRedUsers: RedUser[] = [];
+  aRedUsers: RedUser[] = [];
+  bRedUsers: RedUser[] = [];
 
   aRedUserModel: any = [];
   bRedUserModel: any = [];
 
-  currentPairs : RedUserPair[] = [];
+  currentPairs : RedPair[] = [];
 
 
   constructor(private appService: AppService, private _snackBar: MatSnackBar) { }
@@ -26,10 +28,15 @@ export class UsersComponent implements OnInit {
     this.getUserPairs();
   }
 
-  getAllRedUsers() {
-    this.appService.getAllRedUsers().then(users => {
-      this.allRedUsers = users;
-      this.allRedUsers.forEach(user => user.display = user.login);
+  async getAllRedUsers() {
+    this.allRedUsers = await this.appService.getAllRedUsers();
+    this.allRedUsers.forEach(user => user.display = user.login);
+    this.allRedUsers.forEach(user => {
+      if(user.systemid === 1) {
+        this.aRedUsers.push(user);
+      } else {
+        this.bRedUsers.push(user);
+      }
     });
   }
 
@@ -38,13 +45,10 @@ export class UsersComponent implements OnInit {
   }
 
 
-  async connectSelectedUsers(AID: number, BID: number) {
-    console.log(this.bRedUserModel);
-      if(AID!==null && BID!==null){
-      await this.appService.connectUsers(this.aRedUserModel[0],this.bRedUserModel[0]);
+  async connectSelectedUsers(pair: RedPair) {
+      await this.appService.connectUsers(pair.aId, pair.bId);
       await this.getUserPairs();
       this.openSnackBar('Successful connection!', 'Ok');
-    }
   }
 
   openSnackBar(message: string, action: string) {
@@ -60,52 +64,13 @@ export class UsersComponent implements OnInit {
     this.openSnackBar("Users refreshed!", "Ok");
   }
 
-  pairFinder(aId: number | undefined): void {
-    if(aId === undefined) {
-      return;
-    }
-    for(let i = 0; i < this.currentPairs.length; i++) {
-      if (this.currentPairs[i].auserid === aId) {
-        this.bRedUserModel = [this.currentPairs[i].buserid];
-        return;
-      }
-      else if(this.bCheckIsDisabled(this.bRedUserModel[0])) {
-        this.bRedUserModel = [];
-      }
-    }
-    if(!this.aCheckIsDisabled(this.aRedUserModel[0])) {
-      this.bRedUserModel = [];
-    }
-  }
+
 
   async deleteConnection(auserid: number, buserid: number) {
-    await this.appService.deleteConnection(auserid, buserid);
+    await this.appService.deleteUserConnection(auserid, buserid);
     await this.getUserPairs();
     this.bRedUserModel = [];
     this.openSnackBar('Successful deletion!', 'Ok');
   }
 
-  aCheckIsDisabled(num: number) {
-    let res = false;
-    for(let i = 0; i < this.currentPairs.length; i++) {
-      if (this.currentPairs[i].auserid === num) {
-        res = true;
-      }
-    }
-    return res;
-  }
-
-  bCheckIsDisabled(num: number) {
-    let res = false;
-    for(let i = 0; i < this.currentPairs.length; i++) {
-      if (this.currentPairs[i].buserid === num) {
-        res = true;
-      }
-    }
-    return res;
-  }
-
-  addItem(newItem: string) {
-    console.log(newItem + ' Received');
-  }
 }

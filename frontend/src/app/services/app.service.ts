@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {User} from "../models/user";
 import {RedUser} from "../models/reduser";
-import {RedUserPair} from "../models/reduserpair";
+import {RedPair} from "../models/redpair";
 import {RedSystem} from "../models/redsystem";
 import { Subject } from 'rxjs';
 
@@ -28,11 +28,11 @@ export class AppService {
   }
 
   getUserPairs() {
-    return this.http.get<RedUserPair[]>('http://localhost:8080/systemuserpair').toPromise();
+    return this.http.get<RedPair[]>('http://localhost:8080/systemuserpair').toPromise();
   }
 
-  deleteConnection(auserid: number, buserid: number) {
-    return this.http.post<RedUserPair>('http://localhost:8080/deletesystemuserpair', {auserid,buserid}).toPromise();
+  deleteUserConnection(auserid: number, buserid: number) {
+    return this.http.post<RedPair>('http://localhost:8080/deletesystemuserpair', {auserid,buserid}).toPromise();
   }
 
   refreshUsers() {

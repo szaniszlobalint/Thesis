@@ -1,1 +1,39 @@
-<p>pair-handler works!</p>
+<div class="user-connection-container">
+  <div class="list-container">
+    <mat-card class="aCard">
+      <mat-card-content>
+        <mat-selection-list [multiple]="false" [(ngModel)]="aRedModel" class="SelectList">
+          <div *ngFor="let object of objectsForAList">
+            <mat-list-option (click)="pairFinder(object.id)" [value]="object.id">
+              {{object.display}}
+            </mat-list-option>
+          </div>
+        </mat-selection-list>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="bCard">
+      <mat-card-content>
+        <mat-selection-list [multiple]="false" [(ngModel)]="bRedModel" class="SelectList">
+          <div *ngFor="let object of objectsForBList">
+            <mat-list-option [disabled]="aRedModel.length === 0 || bCheckIsDisabled(object.id!)" [value]="object.id">
+              {{object.display}}
+            </mat-list-option>
+          </div>
+        </mat-selection-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="button-positioning">
+    <button [disabled]="aRedModel.length === 0 || bRedModel.length === 0 || aCheckIsDisabled(aRedModel[0]) || bCheckIsDisabled(bRedModel[0])"
+            mat-raised-button color="primary"
+            (click)="connectObjects(aRedModel[0], bRedModel[0])" type="button" class="button-margin">Connect</button>
+
+    <button [disabled]="aRedModel.length === 0 || bRedModel.length === 0 || !aCheckIsDisabled(aRedModel[0]) || !bCheckIsDisabled(bRedModel[0])"
+            mat-raised-button color="primary"
+            (click)="deleteObjects(aRedModel[0],bRedModel[0])"
+            type="button" class="button-margin">Delete Connection</button>
+
+    <button mat-raised-button color="primary"  (click)="objectsRefresher()" type="button" class="button-margin">Refresh</button>
+  </div>
+</div>
