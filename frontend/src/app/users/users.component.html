@@ -18,7 +18,7 @@
         <mat-selection-list [multiple]="false" [(ngModel)]="aRedUserModel" class="SelectList">
           <div *ngFor="let user of allRedUsers">
           <mat-list-option (click)="pairFinder(user.id)" *ngIf="user.systemid===1 && user.login!==''" [value]="user.id">
-            {{user.login}}
+            {{user.display}}
           </mat-list-option>
           </div>
         </mat-selection-list>
@@ -30,7 +30,7 @@
         <mat-selection-list [multiple]="false" [(ngModel)]="bRedUserModel" class="SelectList">
           <div *ngFor="let user of allRedUsers">
           <mat-list-option [disabled]="aRedUserModel.length === 0 || bCheckIsDisabled(user.id!)" *ngIf="user.systemid===2 && user.login!==''" [value]="user.id">
-            {{user.login}}
+            {{user.display}}
           </mat-list-option>
           </div>
         </mat-selection-list>

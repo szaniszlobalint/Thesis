@@ -5,4 +5,5 @@ export interface RedUser{
   firstname: string;
   systemid?: number;
   redmineid?: number;
+  display: string;
 }

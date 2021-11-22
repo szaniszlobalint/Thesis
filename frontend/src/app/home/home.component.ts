@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
 
   systemArray: RedSystem[] = [];
   systemsForNav: string[] = [];
+  chosenSystem: number = 0;
 
   constructor(private appService: AppService) { }
 
@@ -26,9 +27,11 @@ export class HomeComponent implements OnInit {
     this.systemArray = await this.appService.getSystems();
   }
 
-  pairSystems(firstSystem: string, secondSystem: string) {
-    this.systemsForNav[0] = firstSystem;
-    this.systemsForNav[1] = secondSystem;
-    this.appService.sendSystems(this.systemsForNav);
+  pairSystems(chosenSystem: number) {
+    if(chosenSystem === 1){
+      this.systemsForNav[0] = 'A Redmine';
+      this.systemsForNav[1] = 'B Redmine';
+      this.appService.sendSystems(this.systemsForNav);
+    }
   }
 }

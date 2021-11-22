@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AppService} from "../services/app.service";
-import {User} from "../models/user";
 import {RedUser} from "../models/reduser";
 import {RedUserPair} from "../models/reduserpair";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {interval, Subscription} from "rxjs";
 
 
 @Component({
@@ -13,10 +11,6 @@ import {interval, Subscription} from "rxjs";
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-
-  value = 0;
-  //loading = false;
-
   allRedUsers: RedUser[] = [];
 
   aRedUserModel: any = [];
@@ -32,16 +26,19 @@ export class UsersComponent implements OnInit {
     this.getUserPairs();
   }
 
-  getAllRedUsers(){
-    this.appService.getAllRedUsers().then(users => this.allRedUsers = users);
+  getAllRedUsers() {
+    this.appService.getAllRedUsers().then(users => {
+      this.allRedUsers = users;
+      this.allRedUsers.forEach(user => user.display = user.login);
+    });
   }
 
-  async getUserPairs(){
+  async getUserPairs() {
     this.currentPairs = await this.appService.getUserPairs();
   }
 
 
-  async connectSelectedUsers(AID: number, BID: number){
+  async connectSelectedUsers(AID: number, BID: number) {
     console.log(this.bRedUserModel);
       if(AID!==null && BID!==null){
       await this.appService.connectUsers(this.aRedUserModel[0],this.bRedUserModel[0]);
@@ -57,15 +54,13 @@ export class UsersComponent implements OnInit {
 
   }
 
-  async refreshUsers(){
-   // this.loading = true;
+  async refreshUsers() {
     await this.appService.refreshUsers();
     await this.getAllRedUsers();
     this.openSnackBar("Users refreshed!", "Ok");
-   // this.loading = false;
   }
 
-  pairFinder(aId: number | undefined): void{
+  pairFinder(aId: number | undefined): void {
     if(aId === undefined) {
       return;
     }
@@ -83,19 +78,6 @@ export class UsersComponent implements OnInit {
     }
   }
 
-
-  // async connectionChecker(auserid: number, buserid: number){
-  //   this.currentPair = await this.appService.connectionChecker(auserid, buserid);
-  //   if(this.currentPair?.buserid !== null && this.currentPair?.buserid !== undefined
-  //     && this.currentPair?.auserid !== null && this.currentPair?.auserid !== undefined) {
-  //     this.bRedUserModel = [this.currentPair.buserid];
-  //     this.aRedUserModel = [this.currentPair.auserid];
-  //   }
-  //
-  //   console.log(this.currentPair);
-  //   console.log(this.bRedUserModel);
-  // }
-
   async deleteConnection(auserid: number, buserid: number) {
     await this.appService.deleteConnection(auserid, buserid);
     await this.getUserPairs();
@@ -103,7 +85,7 @@ export class UsersComponent implements OnInit {
     this.openSnackBar('Successful deletion!', 'Ok');
   }
 
-  aCheckIsDisabled(num: number){
+  aCheckIsDisabled(num: number) {
     let res = false;
     for(let i = 0; i < this.currentPairs.length; i++) {
       if (this.currentPairs[i].auserid === num) {
@@ -113,7 +95,7 @@ export class UsersComponent implements OnInit {
     return res;
   }
 
-  bCheckIsDisabled(num: number){
+  bCheckIsDisabled(num: number) {
     let res = false;
     for(let i = 0; i < this.currentPairs.length; i++) {
       if (this.currentPairs[i].buserid === num) {
@@ -126,7 +108,4 @@ export class UsersComponent implements OnInit {
   addItem(newItem: string) {
     console.log(newItem + ' Received');
   }
-
-
-
 }

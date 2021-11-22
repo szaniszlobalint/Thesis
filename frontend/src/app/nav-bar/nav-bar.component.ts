@@ -9,15 +9,13 @@ import {RedSystem} from "../models/redsystem";
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
-  subscription: Subscription | undefined;
-
   firstSystem: string = '';
   secondSystem: string = '';
 
   constructor(private appService: AppService) { }
 
   ngOnInit(): void {
-    this.subscription = this.appService.getMessage().subscribe(systems => {this.firstSystem = systems[0]; this.secondSystem = systems[1]} )
+    this.appService.getMessage().subscribe(systems => {this.firstSystem = systems[0]; this.secondSystem = systems[1]} )
   }
 
 }

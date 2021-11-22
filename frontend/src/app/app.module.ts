@@ -20,6 +20,7 @@ import { HomeComponent } from './home/home.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSelectModule} from "@angular/material/select";
 import { ProjectsComponent } from './projects/projects.component';
+import { PairHandlerComponent } from './pair-handler/pair-handler.component';
 
 
 
@@ -32,7 +33,8 @@ import { ProjectsComponent } from './projects/projects.component';
     UserSubComponent,
     NavBarComponent,
     HomeComponent,
-    ProjectsComponent
+    ProjectsComponent,
+    PairHandlerComponent
   ],
   imports: [
     BrowserModule,
