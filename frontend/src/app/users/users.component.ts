@@ -15,11 +15,7 @@ export class UsersComponent implements OnInit {
   aRedUsers: RedUser[] = [];
   bRedUsers: RedUser[] = [];
 
-  aRedUserModel: any = [];
-  bRedUserModel: any = [];
-
   currentPairs : RedPair[] = [];
-
 
   constructor(private appService: AppService, private _snackBar: MatSnackBar) { }
 
@@ -32,9 +28,12 @@ export class UsersComponent implements OnInit {
     this.allRedUsers = await this.appService.getAllRedUsers();
     this.allRedUsers.forEach(user => user.display = user.login);
     this.allRedUsers.forEach(user => {
-      if(user.systemid === 1) {
+      if(user.systemid === 1 && user.login !== '') {
+        this.aRedUsers.find(aUser => aUser.login === user.login && aUser.systemid === user.systemid
+          
+        )
         this.aRedUsers.push(user);
-      } else {
+      } else if(user.systemid === 2 && user.login !== '') {
         this.bRedUsers.push(user);
       }
     });
@@ -66,10 +65,9 @@ export class UsersComponent implements OnInit {
 
 
 
-  async deleteConnection(auserid: number, buserid: number) {
-    await this.appService.deleteUserConnection(auserid, buserid);
+  async deleteConnection(pair: RedPair) {
+    await this.appService.deleteUserConnection(pair.aId, pair.bId);
     await this.getUserPairs();
-    this.bRedUserModel = [];
     this.openSnackBar('Successful deletion!', 'Ok');
   }
 

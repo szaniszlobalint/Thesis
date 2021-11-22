@@ -75,6 +75,9 @@ export class PairHandlerComponent implements OnInit {
   }
 
   deleteObjects(aId: number, bId: number) {
+    this.objectPair.aId = aId;
+    this.objectPair.bId = bId;
+    this.bRedModel = [];
     this.objectsToDelete.emit(this.objectPair);
   }
 
