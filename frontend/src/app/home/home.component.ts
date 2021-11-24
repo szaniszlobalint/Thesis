@@ -34,7 +34,6 @@ export class HomeComponent implements OnInit {
     this.systemArray = arrayHelper;
 
     //this.systemArray.sort((a,b) => (a.id! > b.id!) ? 1 : -1);
-    console.log(this.systemArray);
   }
 
   async getSystemPairs() {
@@ -44,6 +43,6 @@ export class HomeComponent implements OnInit {
   pairSystems(chosenSystem: number) {
       this.systemsForNav[0] = this.systemArray[this.currentPairs[chosenSystem-1].aid].name;
       this.systemsForNav[1] = this.systemArray[this.currentPairs[chosenSystem-1].bid].name;
-      this.systemService.sendSystems(this.systemsForNav);
+      this.systemService.setSystems(1);
   }
 }

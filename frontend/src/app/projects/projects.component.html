@@ -1,1 +1,4 @@
-<p>projects works!</p>
+<app-pair-handler [objectsForAList]="aRedProjects" [objectsForBList]="bRedProjects"
+                  [currentPairs]="currentPairs" (objectsToConnect)="connectSelectedProjects($event)"
+                  (objectsToDelete)="deleteConnection($event)" (refreshObjects)="refreshProjects()"
+></app-pair-handler>

@@ -6,15 +6,22 @@ import {Subject} from "rxjs";
 })
 export class SystemService {
 
-  private systemSource = new Subject<string[]>();
+  private systemPair = new Subject<number>();
 
   constructor() { }
 
-  getMessage() {
-    return this.systemSource.asObservable();
+  getChosenPair(pair: number | undefined) {
+    if(pair === undefined){
+      this.systemPair.next(1);
+    }
+    return this.systemPair.asObservable();
   }
 
-  sendSystems(systems: string[]) {
-    this.systemSource.next(systems);
+  getMessage() {
+    return this.systemPair.asObservable();
+  }
+
+  setSystems(systems: number) {
+    this.systemPair.next(systems);
   }
 }

@@ -44,9 +44,9 @@ CREATE TABLE IF NOT EXISTS public.SYSTEM_USER_PAIR (
 );
 CREATE TABLE IF NOT EXISTS public.PROJECT (
     ID serial PRIMARY KEY NOT NULL,
-    name VARCHAR(100) UNIQUE NOT NULL,
-    identifier VARCHAR(100) UNIQUE NOT NULL,
-    description VARCHAR(100) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    identifier VARCHAR(100) NOT NULL,
+    description VARCHAR(100),
     user_id INT,
     system_id INT,
     FOREIGN KEY (user_id) REFERENCES SYSTEM_USER(ID),

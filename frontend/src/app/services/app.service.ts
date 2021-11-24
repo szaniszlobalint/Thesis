@@ -4,6 +4,7 @@ import {User} from "../models/user";
 import {RedUser} from "../models/reduser";
 import {RedPair} from "../models/redpair";
 import {RedSystem} from "../models/redsystem";
+import {RedProject} from "../models/redproject";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class AppService {
   }
 
   connectUsers(AID: number, BID: number){
-    return this.http.post('http://localhost:8080/savesystemuserpair', {auserid: AID,buserid: BID}).toPromise();
+    return this.http.post('http://localhost:8080/savesystemuserpair', {aid: AID, bid: BID}).toPromise();
   }
 
   getUserPairs() {
@@ -29,7 +30,7 @@ export class AppService {
   }
 
   deleteUserConnection(auserid: number, buserid: number) {
-    return this.http.post<RedPair>('http://localhost:8080/deletesystemuserpair', {auserid,buserid}).toPromise();
+    return this.http.post<RedPair>('http://localhost:8080/deletesystemuserpair', {aid: auserid, bid: buserid}).toPromise();
   }
 
   refreshUsers() {
@@ -44,4 +45,15 @@ export class AppService {
     return this.http.get<RedPair[]>('http://localhost:8080/getsystempairs').toPromise();
   }
 
+  async getAllRedProjects() {
+    return this.http.get<RedProject[]>('http://localhost:8080/getallprojects').toPromise();
+  }
+
+  async getProjectPairs() {
+    return this.http.get<RedPair[]>('http://localhost:8080/getprojectpairs').toPromise();
+  }
+
+  async connectProjects(aid: number, bid: number) {
+    return this.http.post('http://localhost:8080/saveprojectpair', {aprojectid: aid,bprojectid: aid}).toPromise();
+  }
 }

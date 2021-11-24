@@ -17,7 +17,7 @@ public class ProjectController {
         this.projectRepository = projectRepository;
     }
 
-    @GetMapping("/project")
+    @GetMapping("/getallprojects")
     public List<Project> getProjects() {
         return (List<Project>) projectRepository.findAll();
 

@@ -18,7 +18,7 @@ public class ProjectPairController {
     }
 
 
-    @GetMapping("/projectpair")
+    @GetMapping("/getprojectpairs")
     public List<ProjectPair> getProjectPairs() {
         return (List<ProjectPair>) projectPairRepository.findAll();
 
