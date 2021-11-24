@@ -29,18 +29,21 @@ export class HomeComponent implements OnInit {
 
   async getSystems() {
     this.systemArray = await this.appService.getSystems();
+    let arrayHelper: RedSystem[] = [];
+    this.systemArray.forEach(system => arrayHelper[system.id!] = system);
+    this.systemArray = arrayHelper;
+
+    //this.systemArray.sort((a,b) => (a.id! > b.id!) ? 1 : -1);
+    console.log(this.systemArray);
   }
 
   async getSystemPairs() {
     this.currentPairs = await this.appService.getSystemPairs();
-    console.log(this.currentPairs);
   }
 
   pairSystems(chosenSystem: number) {
-    if(chosenSystem === 1){
-      this.systemsForNav[0] = 'A Redmine';
-      this.systemsForNav[1] = 'B Redmine';
+      this.systemsForNav[0] = this.systemArray[this.currentPairs[chosenSystem-1].aid].name;
+      this.systemsForNav[1] = this.systemArray[this.currentPairs[chosenSystem-1].bid].name;
       this.systemService.sendSystems(this.systemsForNav);
-    }
   }
 }

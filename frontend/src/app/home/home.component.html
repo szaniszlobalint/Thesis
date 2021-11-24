@@ -3,7 +3,7 @@
     <mat-label>Choose System</mat-label>
     <mat-select [(ngModel)]="chosenSystem">
         <mat-option *ngFor="let pairs of currentPairs" [value]=pairs.id>
-          {{systemArray[pairs.aid-1].name}} - {{systemArray[1].name}}
+          {{systemArray[pairs.aid].name}} - {{systemArray[pairs.bid].name}}
         </mat-option>
     </mat-select>
   </mat-form-field>
