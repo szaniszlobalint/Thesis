@@ -19,7 +19,7 @@ public class SystemPairController {
 
 
 
-    @GetMapping("/systempair")
+    @GetMapping("/getsystempairs")
     public List<SystemPair> getSystemPairs() {
         return (List<SystemPair>) systemPairRepository.findAll();
 

@@ -1,5 +1,5 @@
 export interface RedPair {
-  aId: number,
-  bId: number,
+  aid: number,
+  bid: number,
   id: number
 }

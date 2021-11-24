@@ -12,8 +12,8 @@ export class PairHandlerComponent implements OnInit {
   bRedModel: any = [];
 
   objectPair: RedPair = {
-    aId: 0,
-    bId: 0,
+    aid: 0,
+    bid: 0,
     id: 0
   }
 
@@ -69,14 +69,14 @@ export class PairHandlerComponent implements OnInit {
   }
 
   connectObjects(aId: number, bId: number) {
-    this.objectPair.aId = aId;
-    this.objectPair.bId = bId;
+    this.objectPair.aid = aId;
+    this.objectPair.bid = bId;
     this.objectsToConnect.emit(this.objectPair);
   }
 
   deleteObjects(aId: number, bId: number) {
-    this.objectPair.aId = aId;
-    this.objectPair.bId = bId;
+    this.objectPair.aid = aId;
+    this.objectPair.bid = bId;
     this.bRedModel = [];
     this.objectsToDelete.emit(this.objectPair);
   }

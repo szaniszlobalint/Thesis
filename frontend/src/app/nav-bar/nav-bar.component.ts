@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {AppService} from "../services/app.service";
 import {RedSystem} from "../models/redsystem";
+import {SystemService} from "../services/system.service";
 
 @Component({
   selector: 'app-nav-bar',
@@ -12,10 +13,10 @@ export class NavBarComponent implements OnInit {
   firstSystem: string = '';
   secondSystem: string = '';
 
-  constructor(private appService: AppService) { }
+  constructor(private appService: AppService, private systemService: SystemService) { }
 
   ngOnInit(): void {
-    this.appService.getMessage().subscribe(systems => {this.firstSystem = systems[0]; this.secondSystem = systems[1]} )
+    this.systemService.getMessage().subscribe(systems => {this.firstSystem = systems[0]; this.secondSystem = systems[1]} )
   }
 
 }

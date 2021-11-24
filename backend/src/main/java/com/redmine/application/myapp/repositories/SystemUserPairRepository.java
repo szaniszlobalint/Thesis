@@ -7,10 +7,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SystemUserPairRepository extends CrudRepository<SystemUserPair, Long> {
 
-    boolean existsByAuserid(long num);
-    boolean existsByBuserid(long num);
-    SystemUserPair findByAuserid(long num);
-    SystemUserPair findByBuserid(long num);
-    SystemUserPair findByAuseridAndBuserid(long num1, long num2);
-
+    boolean existsByAid(long num);
+    boolean existsByBid(long num);
+    SystemUserPair findByAid(long num);
+    SystemUserPair findByBid(long num);
+    SystemUserPair findByAidAndBid(long num1, long num2);
 }

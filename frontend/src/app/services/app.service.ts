@@ -4,14 +4,11 @@ import {User} from "../models/user";
 import {RedUser} from "../models/reduser";
 import {RedPair} from "../models/redpair";
 import {RedSystem} from "../models/redsystem";
-import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppService {
-
-  private systemSource = new Subject<string[]>();
 
   constructor(private http: HttpClient) { }
 
@@ -43,12 +40,8 @@ export class AppService {
     return this.http.get<RedSystem[]>('http://localhost:8080/getRedSystems').toPromise();
   }
 
-  getMessage() {
-    return this.systemSource.asObservable();
-  }
-
-  sendSystems(systems: string[]) {
-    this.systemSource.next(systems);
+  getSystemPairs() {
+    return this.http.get<RedPair[]>('http://localhost:8080/getsystempairs').toPromise();
   }
 
 }

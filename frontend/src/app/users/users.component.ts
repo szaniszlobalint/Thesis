@@ -29,23 +29,25 @@ export class UsersComponent implements OnInit {
     this.allRedUsers.forEach(user => user.display = user.login);
     this.allRedUsers.forEach(user => {
       if(user.systemid === 1 && user.login !== '') {
-        this.aRedUsers.find(aUser => aUser.login === user.login && aUser.systemid === user.systemid
-          
-        )
-        this.aRedUsers.push(user);
+        if(this.aRedUsers.find(aUser => aUser.login === user.login && aUser.systemid === user.systemid) === undefined){
+          this.aRedUsers.push(user);
+        }
       } else if(user.systemid === 2 && user.login !== '') {
-        this.bRedUsers.push(user);
+        if(this.bRedUsers.find(bUser => bUser.login === user.login && bUser.systemid === user.systemid) === undefined){
+          this.bRedUsers.push(user);
+        }
       }
     });
   }
 
   async getUserPairs() {
     this.currentPairs = await this.appService.getUserPairs();
+    console.log(this.currentPairs);
   }
 
 
   async connectSelectedUsers(pair: RedPair) {
-      await this.appService.connectUsers(pair.aId, pair.bId);
+      await this.appService.connectUsers(pair.aid, pair.bid);
       await this.getUserPairs();
       this.openSnackBar('Successful connection!', 'Ok');
   }
@@ -66,7 +68,7 @@ export class UsersComponent implements OnInit {
 
 
   async deleteConnection(pair: RedPair) {
-    await this.appService.deleteUserConnection(pair.aId, pair.bId);
+    await this.appService.deleteUserConnection(pair.aid, pair.bid);
     await this.getUserPairs();
     this.openSnackBar('Successful deletion!', 'Ok');
   }

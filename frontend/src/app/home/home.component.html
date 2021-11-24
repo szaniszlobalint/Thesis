@@ -2,8 +2,8 @@
   <mat-form-field appearance="fill" class="a-selector" >
     <mat-label>Choose System</mat-label>
     <mat-select [(ngModel)]="chosenSystem">
-        <mat-option [value]=1>
-          A Redmine - B Redmine
+        <mat-option *ngFor="let pairs of currentPairs" [value]=pairs.id>
+          {{systemArray[pairs.aid-1].name}} - {{systemArray[1].name}}
         </mat-option>
     </mat-select>
   </mat-form-field>
@@ -20,7 +20,7 @@
 <!--  </mat-form-field>-->
 
   <div class="system-selectors-button">
-    <button mat-raised-button color="accent" [disabled]="firstSystem === null || secondSystem === null" (click)="pairSystems(chosenSystem)" type="button">Connect</button>
+    <button mat-raised-button color="accent" [disabled]="firstSystem === null || secondSystem === null" (click)="pairSystems(chosenSystem)" type="button">Choose</button>
   </div>
 </div>
 

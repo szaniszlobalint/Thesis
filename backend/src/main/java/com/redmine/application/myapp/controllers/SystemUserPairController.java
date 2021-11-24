@@ -31,17 +31,17 @@ public class SystemUserPairController {
 
     @PostMapping("/deletesystemuserpair")
     void deleteSystemUserPair(@RequestBody SystemUserPair systemUserPair){
-        systemUserPairRepository.delete(systemUserPairRepository.findByAuseridAndBuserid(systemUserPair.getAuserid(),systemUserPair.getBuserid()));
+        systemUserPairRepository.delete(systemUserPairRepository.findByAidAndBid(systemUserPair.getAId(),systemUserPair.getBId()));
     }
 
     @PostMapping("/checksystemuserpairs")
     SystemUserPair checkPairs(@RequestBody SystemUserPair system_user_pair){
-        if(systemUserPairRepository.existsByAuserid(system_user_pair.getAuserid())){
-            System.out.println(systemUserPairRepository.findByAuserid(system_user_pair.getAuserid()).getBuserid());
-            return systemUserPairRepository.findByAuserid(system_user_pair.getAuserid());
-        }else if(systemUserPairRepository.existsByBuserid(system_user_pair.getBuserid())){
-            System.out.println(systemUserPairRepository.findByBuserid(system_user_pair.getBuserid()).getAuserid());
-            return systemUserPairRepository.findByBuserid(system_user_pair.getBuserid());
+        if(systemUserPairRepository.existsByAid(system_user_pair.getAId())){
+            System.out.println(systemUserPairRepository.findByAid(system_user_pair.getAId()).getBId());
+            return systemUserPairRepository.findByAid(system_user_pair.getAId());
+        }else if(systemUserPairRepository.existsByBid(system_user_pair.getBId())){
+            System.out.println(systemUserPairRepository.findByBid(system_user_pair.getBId()).getAId());
+            return systemUserPairRepository.findByBid(system_user_pair.getBId());
         }
         return null;
     }
