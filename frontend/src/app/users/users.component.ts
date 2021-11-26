@@ -42,7 +42,6 @@ export class UsersComponent implements OnInit {
 
   async getUserPairs() {
     this.currentPairs = await this.appService.getUserPairs();
-    console.log(this.currentPairs);
   }
 
 

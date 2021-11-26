@@ -10,18 +10,16 @@ export class SystemService {
 
   constructor() { }
 
-  getChosenPair(pair: number | undefined) {
+  getChosenPair(pair?: number) {
     if(pair === undefined){
       this.systemPair.next(1);
+      return this.systemPair.asObservable();
     }
     return this.systemPair.asObservable();
   }
 
-  getMessage() {
-    return this.systemPair.asObservable();
-  }
 
-  setSystems(systems: number) {
-    this.systemPair.next(systems);
+  setSystems(pairnumber: number) {
+    this.systemPair.next(pairnumber);
   }
 }

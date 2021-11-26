@@ -68,7 +68,6 @@ public class RefreshController {
     @GetMapping("/refreshusers")
     public void RefreshUsersList() throws IOException {
         try{
-            logger.info("RefreshUsersList called");
             CredentialsProvider provider = new BasicCredentialsProvider();
             UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("admin", "12345678");
             provider.setCredentials(AuthScope.ANY, credentials);
@@ -124,7 +123,6 @@ public class RefreshController {
     @GetMapping("/refreshprojects")
     public void RefreshProjectsList() throws IOException {
         try{
-            logger.info("RefreshProjectsList called");
             CredentialsProvider provider = new BasicCredentialsProvider();
             UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("admin", "12345678");
             provider.setCredentials(AuthScope.ANY, credentials);

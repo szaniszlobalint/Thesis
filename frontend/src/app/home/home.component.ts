@@ -17,7 +17,6 @@ export class HomeComponent implements OnInit {
 
   currentPairs: RedPair[] = [];
   systemArray: RedSystem[] = [];
-  systemsForNav: string[] = [];
   chosenSystem: number = 0;
 
   constructor(private appService: AppService, private systemService: SystemService) { }
@@ -41,8 +40,6 @@ export class HomeComponent implements OnInit {
   }
 
   pairSystems(chosenSystem: number) {
-      this.systemsForNav[0] = this.systemArray[this.currentPairs[chosenSystem-1].aid].name;
-      this.systemsForNav[1] = this.systemArray[this.currentPairs[chosenSystem-1].bid].name;
-      this.systemService.setSystems(1);
+      this.systemService.setSystems(chosenSystem);
   }
 }

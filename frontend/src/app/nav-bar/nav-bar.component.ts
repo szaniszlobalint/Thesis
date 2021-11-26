@@ -15,7 +15,7 @@ export class NavBarComponent implements OnInit {
 
   currentPairs: RedPair[] = [];
   systemArray: RedSystem[] = [];
-  chosenPair: number = 0;
+  //chosenPair: number = 0;
 
   firstSystem: string = '';
   secondSystem: string = '';
@@ -25,7 +25,12 @@ export class NavBarComponent implements OnInit {
   ngOnInit(): void {
     this.getSystems();
     this.getSystemPairs();
-    this.systemService.getChosenPair(undefined).subscribe(pair => {this.chosenPair = pair; console.log(this.chosenPair)})
+
+    this.systemService.getChosenPair().subscribe(pair => {
+      this.firstSystem = this.systemArray[this.currentPairs[pair-1].aid].name;
+      this.secondSystem = this.systemArray[this.currentPairs[pair-1].bid].name;
+    });
+    //this.systemService.setSystems(1);
     //this.firstSystem = this.systemArray[this.currentPairs[this.chosenPair-1].aid].name;
   }
 

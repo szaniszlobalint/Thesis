@@ -30,7 +30,6 @@ public class ProjectPairController {
 
     @PostMapping("/saveprojectpair")
     void addProjecPair(@RequestBody ProjectPair projectPair) {
-        logger.info(projectPair);
         projectPairRepository.save(projectPair);
     }
 

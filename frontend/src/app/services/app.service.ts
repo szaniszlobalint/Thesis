@@ -21,7 +21,7 @@ export class AppService {
     return this.http.get<RedUser[]>('http://localhost:8080/getallsystemusers').toPromise();
   }
 
-  connectUsers(AID: number, BID: number){
+  connectUsers(AID: number, BID: number) {
     return this.http.post('http://localhost:8080/savesystemuserpair', {aid: AID, bid: BID}).toPromise();
   }
 
