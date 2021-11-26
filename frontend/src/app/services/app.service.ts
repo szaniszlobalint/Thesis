@@ -34,7 +34,7 @@ export class AppService {
   }
 
   refreshUsers() {
-    return this.http.get<RedUser[]>('http://localhost:8080/refresh').toPromise();
+    return this.http.get<RedUser[]>('http://localhost:8080/refreshusers').toPromise();
   }
 
   getSystems() {
@@ -54,6 +54,14 @@ export class AppService {
   }
 
   async connectProjects(aid: number, bid: number) {
-    return this.http.post('http://localhost:8080/saveprojectpair', {aprojectid: aid,bprojectid: aid}).toPromise();
+    return this.http.post('http://localhost:8080/saveprojectpair', {aid: aid,bid: bid}).toPromise();
+  }
+
+  async refreshProjects() {
+    return this.http.get<RedProject[]>('http://localhost:8080/refreshprojects').toPromise();
+  }
+
+  async deleteProjectConnection(aid: number, bid: number) {
+    return this.http.post<RedPair>('http://localhost:8080/deleteprojectpair', {aid: aid, bid: bid}).toPromise();
   }
 }

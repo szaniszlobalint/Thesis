@@ -33,7 +33,7 @@ export class PairHandlerComponent implements OnInit {
   aCheckIsDisabled(num: number) {
     let res = false;
     for(let i = 0; i < this.currentPairs.length; i++) {
-      if (this.currentPairs[i].auserid === num) {
+      if (this.currentPairs[i].aid === num) {
         res = true;
       }
     }
@@ -43,7 +43,7 @@ export class PairHandlerComponent implements OnInit {
   bCheckIsDisabled(num: number) {
     let res = false;
     for(let i = 0; i < this.currentPairs.length; i++) {
-      if (this.currentPairs[i].buserid === num) {
+      if (this.currentPairs[i].bid === num) {
         res = true;
       }
     }
@@ -55,8 +55,8 @@ export class PairHandlerComponent implements OnInit {
       return;
     }
     for(let i = 0; i < this.currentPairs.length; i++) {
-      if (this.currentPairs[i].auserid === aId) {
-        this.bRedModel = [this.currentPairs[i].buserid];
+      if (this.currentPairs[i].aid === aId) {
+        this.bRedModel = [this.currentPairs[i].bid];
         return;
       }
       else if(this.bCheckIsDisabled(this.bRedModel[0])) {

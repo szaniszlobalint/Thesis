@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.redmine.application.myapp.entities.Project;
+import com.redmine.application.myapp.entities.RedProjectOriginal;
 import com.redmine.application.myapp.entities.SystemUser;
 import com.redmine.application.myapp.entities.RedmineOriginal;
+import com.redmine.application.myapp.repositories.ProjectRepository;
 import com.redmine.application.myapp.repositories.SystemUserRepository;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -43,20 +46,29 @@ public class RefreshController {
 
     private final SystemUserRepository systemUserRepository;
 
-    public RefreshController(SystemUserRepository systemUserRepository) {
+    private final ProjectRepository projectRepository;
+
+    public RefreshController(SystemUserRepository systemUserRepository, ProjectRepository projectRepository) {
         this.systemUserRepository = systemUserRepository;
+        this.projectRepository = projectRepository;
     }
 
     void addSystemUser(SystemUser systemUser){
             if(!systemUserRepository.existsByLoginAndSystemid(systemUser.getLogin() , systemUser.getSystemid())){
                 systemUserRepository.save(systemUser);
             }
-        }
+    }
 
-    @GetMapping("/refresh")
-    public void RefreshList() throws IOException {
+    void addProject(Project project){
+        if(!projectRepository.existsByNameAndSystemid(project.getName() , project.getSystemid())){
+            projectRepository.save(project);
+        }
+    }
+
+    @GetMapping("/refreshusers")
+    public void RefreshUsersList() throws IOException {
         try{
-            logger.info("RefreshList called");
+            logger.info("RefreshUsersList called");
             CredentialsProvider provider = new BasicCredentialsProvider();
             UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("admin", "12345678");
             provider.setCredentials(AuthScope.ANY, credentials);
@@ -101,6 +113,60 @@ public class RefreshController {
                 SystemUser systemUser = new SystemUser(redmineUser.getFirstname(), redmineUser.getLastname(),
                         redmineUser.getLogin(), 2, redmineUser.getId());
                 addSystemUser(systemUser);
+            }
+
+        }
+        catch(IOException | JSONException e){
+            System.out.println(e);
+        }
+    }
+
+    @GetMapping("/refreshprojects")
+    public void RefreshProjectsList() throws IOException {
+        try{
+            logger.info("RefreshProjectsList called");
+            CredentialsProvider provider = new BasicCredentialsProvider();
+            UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("admin", "12345678");
+            provider.setCredentials(AuthScope.ANY, credentials);
+
+            HttpClient client = HttpClientBuilder.create()
+                    .setDefaultCredentialsProvider(provider)
+                    .build();
+
+            HttpResponse response = client.execute(new HttpGet("http://localhost:3000/projects.json"));
+
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            HttpEntity entity = response.getEntity();
+
+            JSONObject myObject = new JSONObject(EntityUtils.toString(entity));
+
+            List<RedProjectOriginal> redmineProjectList = objectMapper.readValue(myObject.getString("projects"), new TypeReference<List<RedProjectOriginal>>(){});
+
+            //JSONArray ArrayOfJsons = myObject.getJSONArray("users");
+            for (RedProjectOriginal redmineProject : redmineProjectList) {
+                //logger.info(systemUserList.get(i));
+                //JSONObject objects = ArrayOfJsons.getJSONObject(i);
+                Project project = new Project(redmineProject.getName(), redmineProject.getIdentifier(),  1, redmineProject.getId());
+                addProject(project);
+            }
+
+            response = client.execute(new HttpGet("http://localhost:3010/projects.json"));
+
+            statusCode = response.getStatusLine().getStatusCode();
+
+            entity = response.getEntity();
+
+            myObject = new JSONObject(EntityUtils.toString(entity));
+
+            redmineProjectList = objectMapper.readValue(myObject.getString("projects"), new TypeReference<List<RedProjectOriginal>>(){});
+
+            //ArrayOfJsons = myObject.getJSONArray("users");
+
+            for (RedProjectOriginal redmineProject : redmineProjectList) {
+                //JSONObject objects = ArrayOfJsons.getJSONObject(i);
+                Project project = new Project(redmineProject.getName(), redmineProject.getIdentifier(),  2, redmineProject.getId());
+                addProject(project);
             }
 
         }

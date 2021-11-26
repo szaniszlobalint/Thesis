@@ -48,10 +48,10 @@ CREATE TABLE IF NOT EXISTS public.PROJECT (
     identifier VARCHAR(100) NOT NULL,
     description VARCHAR(100),
     user_id INT,
-    system_id INT,
+    systemid INT NOT NULL,
+    redmineid INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES SYSTEM_USER(ID),
     FOREIGN KEY (system_id) REFERENCES SYSTEM(ID)
-
 );
 CREATE TABLE IF NOT EXISTS public.PROJECT_PAIR (
     ID serial PRIMARY KEY NOT NULL,

@@ -9,33 +9,34 @@ public class ProjectPair {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long ID;
-    private long A_ProjectID;
-    private long B_ProjectID;
-
+    @Column(name="a_projectid", nullable = false, unique = true)
+    private long aid;
+    @Column(name="b_projectid", nullable = false, unique = true)
+    private long bid;
     protected ProjectPair() {
     }
 
-    public ProjectPair(long ID, long a_ProjectID, long b_ProjectID) {
+    public ProjectPair(long ID, long aid, long bid) {
         this.ID = ID;
-        A_ProjectID = a_ProjectID;
-        B_ProjectID = b_ProjectID;
+        this.aid = aid;
+        this.bid = bid;
     }
 
     public long getID() {
         return ID;
     }
 
-    public long getA_ProjectID() {
-        return A_ProjectID;
+    public long getAid() {
+        return aid;
     }
 
-    public long getB_ProjectID() {
-        return B_ProjectID;
+    public long getBid() {
+        return bid;
     }
 
     @Override
     public String toString() {
-        return "com.redmine.application.myapp.entities.System{" + "ID=" + ID + "A_ID=" + A_ProjectID + "B_ID=" + B_ProjectID +"}";
+        return "com.redmine.application.myapp.entities.System{" + "ID=" + ID + "A_ID=" + aid + "B_ID=" + bid +"}";
     }
 
 

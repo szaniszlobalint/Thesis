@@ -43,6 +43,7 @@ export class ProjectsComponent implements OnInit {
 
   async getProjectPairs() {
     this.currentPairs = await this.appService.getProjectPairs();
+    console.log(this.currentPairs);
   }
 
 
