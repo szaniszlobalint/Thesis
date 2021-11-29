@@ -40,6 +40,6 @@ export class HomeComponent implements OnInit {
   }
 
   pairSystems(chosenSystem: number) {
-      this.systemService.setSystems(chosenSystem);
+      this.systemService.setSelectedSystem(chosenSystem);
   }
 }

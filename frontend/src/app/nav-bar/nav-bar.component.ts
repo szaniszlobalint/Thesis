@@ -12,39 +12,32 @@ import {RedPair} from "../models/redpair";
 })
 export class NavBarComponent implements OnInit {
 
-
-  currentPairs: RedPair[] = [];
-  systemArray: RedSystem[] = [];
-  //chosenPair: number = 0;
-
-  firstSystem: string = '';
-  secondSystem: string = '';
+  info: {
+    systemPairs: RedPair[],
+    systemArray: RedSystem[],
+    selectedPair: RedPair | undefined
+  } = {
+    systemPairs: [],
+    systemArray: [],
+    selectedPair: undefined
+  };
 
   constructor(private appService: AppService, private systemService: SystemService) { }
 
   ngOnInit(): void {
-    this.getSystems();
-    this.getSystemPairs();
-
-    this.systemService.getChosenPair().subscribe(pair => {
-      this.firstSystem = this.systemArray[this.currentPairs[pair-1].aid].name;
-      this.secondSystem = this.systemArray[this.currentPairs[pair-1].bid].name;
-    });
-    //this.systemService.setSystems(1);
-    //this.firstSystem = this.systemArray[this.currentPairs[this.chosenPair-1].aid].name;
+    this.info = this.systemService.getSystemInfo();
   }
 
-  async getSystems() {
-    this.systemArray = await this.appService.getSystems();
-    let arrayHelper: RedSystem[] = [];
-    this.systemArray.forEach(system => arrayHelper[system.id!] = system);
-    this.systemArray = arrayHelper;
-
-    //this.systemArray.sort((a,b) => (a.id! > b.id!) ? 1 : -1);
-  }
-
-  async getSystemPairs() {
-    this.currentPairs = await this.appService.getSystemPairs();
+  printSelectedSystemPair() {
+    let value: string | undefined;
+    if(this.info.selectedPair === undefined) {
+      value = this.info.systemArray.find(item => item.id === this.info.systemPairs[0].aid)!.name + " - "
+      + this.info.systemArray.find(item => item.id === this.info.systemPairs[0].bid)!.name;
+    }else {
+      value = this.info.systemArray.find(item => item.id === this.info.selectedPair!.aid)!.name + " - "
+        + this.info.systemArray.find(item => item.id === this.info.selectedPair!.bid)!.name;
+    }
+    return value;
   }
 
 }
