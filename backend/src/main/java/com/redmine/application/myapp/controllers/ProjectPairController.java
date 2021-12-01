@@ -25,7 +25,6 @@ public class ProjectPairController {
     @GetMapping("/getprojectpairs")
     public List<ProjectPair> getProjectPairs() {
         return (List<ProjectPair>) projectPairRepository.findAll();
-
     }
 
     @PostMapping("/saveprojectpair")

@@ -42,4 +42,8 @@ export class HomeComponent implements OnInit {
   pairSystems(chosenSystem: number) {
       this.systemService.setSelectedSystem(chosenSystem);
   }
+
+  synchronizeIssues() {
+    this.appService.synchronizeIssues().then(res => console.log(res));
+  }
 }

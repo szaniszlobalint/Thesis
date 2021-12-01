@@ -64,4 +64,8 @@ export class AppService {
   async deleteProjectConnection(aid: number, bid: number) {
     return this.http.post<RedPair>('http://localhost:8080/deleteprojectpair', {aid: aid, bid: bid}).toPromise();
   }
+
+  synchronizeIssues() {
+    return this.http.get<string>('http://localhost:8080/synchronizeissues').toPromise();
+  }
 }

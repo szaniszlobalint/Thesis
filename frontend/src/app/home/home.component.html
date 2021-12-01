@@ -22,6 +22,9 @@
   <div class="system-selectors-button">
     <button mat-raised-button color="accent" [disabled]="firstSystem === null || secondSystem === null" (click)="pairSystems(chosenSystem)" type="button">Choose</button>
   </div>
+  <div class="system-selectors-button">
+    <button mat-raised-button color="accent" (click)="synchronizeIssues()" type="button">Synchronize</button>
+  </div>
 </div>
 
 

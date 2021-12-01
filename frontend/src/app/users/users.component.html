@@ -1,4 +1,7 @@
-<app-pair-handler [objectsForAList]="aRedUsers" [objectsForBList]="bRedUsers"
-[currentPairs]="currentPairs" (objectsToConnect)="connectSelectedUsers($event)"
-(objectsToDelete)="deleteConnection($event)" (refreshObjects)="refreshUsers()"
+<app-pair-handler [objectsForAList]="aRedUsers"
+                  [objectsForBList]="bRedUsers"
+                  [currentPairs]="currentPairs"
+                  (objectsToConnect)="connectSelectedUsers($event)"
+                  (objectsToDelete)="deleteConnection($event)"
+                  (refreshObjects)="refreshUsers()"
 ></app-pair-handler>
