@@ -47,6 +47,7 @@ public class IssueController {
             List<ProjectPair> projectPairs = (List<ProjectPair>) projectPairRepository.findAll();
             List<Project> projects = (List<Project>) projectRepository.findAll();
             List<Issue> aProjectIssues = new ArrayList<Issue>();
+            List<Issue> bProjectIssues = new ArrayList<Issue>();
 
             CredentialsProvider provider = new BasicCredentialsProvider();
             UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("admin", "12345678");
@@ -66,37 +67,45 @@ public class IssueController {
 
                     JSONObject myObject = new JSONObject(EntityUtils.toString(entity));
 
-                    List<RedmineOriginal> redmineUserList = objectMapper.readValue(myObject.getString("users"), new TypeReference<List<RedmineOriginal>>() {
+                    List<RedIssueOriginal> redmineIssueList = objectMapper.readValue(myObject.getString("issues"), new TypeReference<List<RedIssueOriginal>>() {
                     });
 
-                    //JSONArray ArrayOfJsons = myObject.getJSONArray("users");
-                    for (RedmineOriginal redmineUser : redmineUserList) {
-                        //logger.info(systemUserList.get(i));
-                        //JSONObject objects = ArrayOfJsons.getJSONObject(i);
-                        SystemUser systemUser = new SystemUser(redmineUser.getFirstname(), redmineUser.getLastname(),
-                                redmineUser.getLogin(), 1, redmineUser.getId());
-                        addSystemUser(systemUser);
+
+                    for (RedIssueOriginal redmineIssue : redmineIssueList) {
+                        Issue issue = new Issue(redmineIssue.getId(),redmineIssue.getTracker().getId(),redmineIssue.getSubject(),
+                                redmineIssue.getAssigned_to().getId(),redmineIssue.getStatus().getId(),
+                                redmineIssue.getPriority().getId(), 1, redmineIssue.getProject().getID());
+                        aProjectIssues.add(issue);
+                    }
+
+                }
+            }
+
+            for (Project project : projects) {
+                if (project.getSystemid() == 2) {
+                    HttpResponse response = client.execute(new HttpGet("http://localhost:3010/issues.json?project_id=" + project.getRedmineid()));
+
+                    int statusCode = response.getStatusLine().getStatusCode();
+
+                    HttpEntity entity = response.getEntity();
+
+                    JSONObject myObject = new JSONObject(EntityUtils.toString(entity));
+
+                    List<RedIssueOriginal> redmineIssueList = objectMapper.readValue(myObject.getString("issues"), new TypeReference<List<RedIssueOriginal>>() {
+                    });
+
+
+                    for (RedIssueOriginal redmineIssue : redmineIssueList) {
+                        Issue issue = new Issue(redmineIssue.getId(),redmineIssue.getTracker().getId(),redmineIssue.getSubject(),
+                                redmineIssue.getAssigned_to().getId(),redmineIssue.getStatus().getId(),
+                                redmineIssue.getPriority().getId(), 2, redmineIssue.getProject().getID());
+                        bProjectIssues.add(issue);
                     }
                 }
             }
 
-            response = client.execute(new HttpGet("http://localhost:3010/issues.json"));
-
-            statusCode = response.getStatusLine().getStatusCode();
-
-            entity = response.getEntity();
-
-            myObject = new JSONObject(EntityUtils.toString(entity));
-
-            redmineUserList = objectMapper.readValue(myObject.getString("users"), new TypeReference<List<RedmineOriginal>>(){});
-
-            //ArrayOfJsons = myObject.getJSONArray("users");
-
-            for (RedmineOriginal redmineUser : redmineUserList) {
-                //JSONObject objects = ArrayOfJsons.getJSONObject(i);
-                SystemUser systemUser = new SystemUser(redmineUser.getFirstname(), redmineUser.getLastname(),
-                        redmineUser.getLogin(), 2, redmineUser.getId());
-                addSystemUser(systemUser);
+            for (Issue issue : bProjectIssues){
+                logger.info(issue);
             }
 
         }

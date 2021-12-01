@@ -1,5 +1,7 @@
 package com.redmine.application.myapp.entities;
 
+import org.json.JSONObject;
+
 public class RedIssueOriginal {
     private String closed_on;
     private String created_on;
@@ -7,11 +9,25 @@ public class RedIssueOriginal {
     private long done_ratio;
     private String due_date;
     private String start_date;
+    private String updated_on;
+    private long estimated_hours;
+    private boolean is_private;
+    private IssueAuthor author;
+    private long id;
+    private IssueTracker tracker;
+    private String subject;
+    private IssueAssignedTo assigned_to;
+    private IssueStatus status;
+    private IssuePriority priority;
+    private long systemid;
+    private Project project;
+
+    protected RedIssueOriginal() {
+    }
 
     public RedIssueOriginal(String closed_on, String created_on, String description, long done_ratio, String due_date,
-                            String start_date, String updated_on, long estimated_hours,
-                            boolean is_private, long author, long id, long tracker, String subject, long assigned_to,
-                            long status, long priority, long systemid, long projectid) {
+                            String start_date, String updated_on, long estimated_hours, boolean is_private, IssueAuthor author, long id, IssueTracker tracker,
+                            String subject, IssueAssignedTo assigned_to, IssueStatus status, IssuePriority priority, long systemid, Project project) {
         this.closed_on = closed_on;
         this.created_on = created_on;
         this.description = description;
@@ -29,21 +45,8 @@ public class RedIssueOriginal {
         this.status = status;
         this.priority = priority;
         this.systemid = systemid;
-        this.projectid = projectid;
+        this.project = project;
     }
-
-    private String updated_on;
-    private long estimated_hours;
-    private boolean is_private;
-    private long author;
-    private long id;
-    private long tracker;
-    private String subject;
-    private long assigned_to;
-    private long status;
-    private long priority;
-    private long systemid;
-    private long projectid;
 
     public String getClosed_on() {
         return closed_on;
@@ -117,11 +120,11 @@ public class RedIssueOriginal {
         this.is_private = is_private;
     }
 
-    public long getAuthor() {
+    public IssueAuthor getAuthor() {
         return author;
     }
 
-    public void setAuthor(long author) {
+    public void setAuthor(IssueAuthor author) {
         this.author = author;
     }
 
@@ -133,11 +136,11 @@ public class RedIssueOriginal {
         this.id = id;
     }
 
-    public long getTracker() {
+    public IssueTracker getTracker() {
         return tracker;
     }
 
-    public void setTracker(long tracker) {
+    public void setTracker(IssueTracker tracker) {
         this.tracker = tracker;
     }
 
@@ -149,27 +152,27 @@ public class RedIssueOriginal {
         this.subject = subject;
     }
 
-    public long getAssigned_to() {
+    public IssueAssignedTo getAssigned_to() {
         return assigned_to;
     }
 
-    public void setAssigned_to(long assigned_to) {
+    public void setAssigned_to(IssueAssignedTo assigned_to) {
         this.assigned_to = assigned_to;
     }
 
-    public long getStatus() {
+    public IssueStatus getStatus() {
         return status;
     }
 
-    public void setStatus(long status) {
+    public void setStatus(IssueStatus status) {
         this.status = status;
     }
 
-    public long getPriority() {
+    public IssuePriority getPriority() {
         return priority;
     }
 
-    public void setPriority(long priority) {
+    public void setPriority(IssuePriority priority) {
         this.priority = priority;
     }
 
@@ -181,11 +184,35 @@ public class RedIssueOriginal {
         this.systemid = systemid;
     }
 
-    public long getProjectid() {
-        return projectid;
+    public Project getProject() {
+        return project;
     }
 
-    public void setProjectid(long projectid) {
-        this.projectid = projectid;
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    @Override
+    public String toString() {
+        return "RedIssueOriginal{" +
+                "closed_on='" + closed_on + '\'' +
+                ", created_on='" + created_on + '\'' +
+                ", description='" + description + '\'' +
+                ", done_ratio=" + done_ratio +
+                ", due_date='" + due_date + '\'' +
+                ", start_date='" + start_date + '\'' +
+                ", updated_on='" + updated_on + '\'' +
+                ", estimated_hours=" + estimated_hours +
+                ", is_private=" + is_private +
+                ", author=" + author +
+                ", id=" + id +
+                ", tracker=" + tracker +
+                ", subject='" + subject + '\'' +
+                ", assigned_to=" + assigned_to +
+                ", status=" + status +
+                ", priority=" + priority +
+                ", systemid=" + systemid +
+                ", project=" + project +
+                '}';
     }
 }

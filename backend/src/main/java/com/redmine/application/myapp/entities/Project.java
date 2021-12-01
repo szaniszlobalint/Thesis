@@ -31,6 +31,13 @@ public class Project {
         this.redmineid = redmineid;
     }
 
+    public Project(String name, long redmineid) {
+        this.name = name;
+        this.redmineid = redmineid;
+    }
+
+
+
     public long getID() {
         return ID;
     }
