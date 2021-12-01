@@ -104,8 +104,17 @@ public class IssueController {
                 }
             }
 
-            for (Issue issue : bProjectIssues){
-                logger.info(issue);
+            for (Issue aIssue : aProjectIssues){
+                boolean found = false;
+                for(Issue bIssue: bProjectIssues){
+                    if(bIssue.getSubject().contains("(#"+ aIssue.getId() + ")")){
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found){
+                   logger.info(aIssue);
+                }
             }
 
         }
