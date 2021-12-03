@@ -55,7 +55,7 @@ public class IssueController {
     }
 
     @GetMapping("/synchronizeissues")
-    public void SynchronizeIssues() {
+    public String SynchronizeIssues() {
         try{
             List<ProjectPair> projectPairs = (List<ProjectPair>) projectPairRepository.findAll();
             List<SystemUserPair> userPairs = (List<SystemUserPair>) systemUserPairRepository.findAll();
@@ -73,7 +73,7 @@ public class IssueController {
                     .build();
 
             for (Project project : projects) {
-                if (projectPairRepository.existsByAid(project.getRedmineid()) && project.getSystemid() == 1) {
+                if (projectPairRepository.existsByAid(project.getID()) && project.getSystemid() == 1) {
                     HttpResponse response = client.execute(new HttpGet("http://localhost:3000/issues.json?project_id=" + project.getRedmineid()));
 
                     int statusCode = response.getStatusLine().getStatusCode();
@@ -119,6 +119,14 @@ public class IssueController {
                 }
             }
 
+            for(Issue issue : aProjectIssues) {
+                logger.debug("a Issue = " + issue);
+            }
+
+            for(Issue issue : bProjectIssues) {
+                logger.debug("b Issue = " + issue);
+            }
+
             for (Issue aIssue : aProjectIssues){
                 boolean found = false;
                 for(Issue bIssue: bProjectIssues){
@@ -128,6 +136,7 @@ public class IssueController {
                     }
                 }
                 if(!found){
+                    logger.debug("eljutottam ide");
                     long bUserRedId = -1;
                     for(SystemUser user : systemUsers){
                         if(user.getRedmineid() == aIssue.getAssigned_to()){
@@ -176,6 +185,7 @@ public class IssueController {
         catch(IOException | JSONException e){
             logger.error(e);
         }
+        return "ok";
     }
 
 }
