@@ -21,6 +21,16 @@ public class Issue {
         this.projectid = projectid;
     }
 
+    public Issue(long id, long tracker, String subject, long status, long priority, long systemid, long projectid) {
+        this.id = id;
+        this.tracker = tracker;
+        this.subject = subject;
+        this.status = status;
+        this.priority = priority;
+        this.systemid = systemid;
+        this.projectid = projectid;
+    }
+
     public long getId() {
         return id;
     }

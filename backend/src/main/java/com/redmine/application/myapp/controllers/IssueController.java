@@ -14,6 +14,7 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -54,9 +55,13 @@ public class IssueController {
         this.systemUserPairRepository = systemUserPairRepository;
     }
 
-    @GetMapping("/synchronizeissues")
+    @GetMapping("/synchronizeissues") // add systemPairId=id
     public String SynchronizeIssues() {
         try{
+            // Get systemPair
+            // Get aProjects from aSystem which has any pair
+            // projectpair, function with and without method
+
             List<ProjectPair> projectPairs = (List<ProjectPair>) projectPairRepository.findAll();
             List<SystemUserPair> userPairs = (List<SystemUserPair>) systemUserPairRepository.findAll();
             List<Project> projects = (List<Project>) projectRepository.findAll();
@@ -68,13 +73,17 @@ public class IssueController {
             UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("admin", "12345678");
             provider.setCredentials(AuthScope.ANY, credentials);
 
+            RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(10 * 1000).build();
+
             HttpClient client = HttpClientBuilder.create()
                     .setDefaultCredentialsProvider(provider)
+                    .setDefaultRequestConfig(requestConfig)
                     .build();
 
             for (Project project : projects) {
                 if (projectPairRepository.existsByAid(project.getID()) && project.getSystemid() == 1) {
-                    HttpResponse response = client.execute(new HttpGet("http://localhost:3000/issues.json?project_id=" + project.getRedmineid()));
+                    HttpGet getAIssuesRequest = new HttpGet("http://localhost:3000/issues.json?project_id=" + project.getRedmineid());
+                    HttpResponse response = client.execute(getAIssuesRequest);
 
                     int statusCode = response.getStatusLine().getStatusCode();
 
@@ -87,18 +96,25 @@ public class IssueController {
 
 
                     for (RedIssueOriginal redmineIssue : redmineIssueList) {
-                        Issue issue = new Issue(redmineIssue.getId(),redmineIssue.getTracker().getId(),redmineIssue.getSubject(),
-                                redmineIssue.getAssigned_to().getId(),redmineIssue.getStatus().getId(),
-                                redmineIssue.getPriority().getId(), 1, redmineIssue.getProject().getID());
-                        aProjectIssues.add(issue);
+                        if(redmineIssue.getAssigned_to() != null){
+                            Issue issue = new Issue(redmineIssue.getId(),redmineIssue.getTracker().getId(),redmineIssue.getSubject(),
+                                    redmineIssue.getAssigned_to().getId(),redmineIssue.getStatus().getId(),
+                                    redmineIssue.getPriority().getId(), 1, redmineIssue.getProject().getID());
+                            aProjectIssues.add(issue);
+                        } else {
+                            Issue issue = new Issue(redmineIssue.getId(),redmineIssue.getTracker().getId(),redmineIssue.getSubject(), redmineIssue.getStatus().getId(),
+                                    redmineIssue.getPriority().getId(), 1, redmineIssue.getProject().getID());
+                            aProjectIssues.add(issue);
+                        }
                     }
-
+                    getAIssuesRequest.releaseConnection();
                 }
             }
 
             for (Project project : projects) {
                 if (project.getSystemid() == 2) {
-                    HttpResponse response = client.execute(new HttpGet("http://localhost:3010/issues.json?project_id=" + project.getRedmineid()));
+                    HttpGet getBIssues = new HttpGet("http://localhost:3010/issues.json?project_id=" + project.getRedmineid());
+                    HttpResponse response = client.execute(getBIssues);
 
                     int statusCode = response.getStatusLine().getStatusCode();
 
@@ -111,82 +127,72 @@ public class IssueController {
 
 
                     for (RedIssueOriginal redmineIssue : redmineIssueList) {
-                        Issue issue = new Issue(redmineIssue.getId(),redmineIssue.getTracker().getId(),redmineIssue.getSubject(),
-                                redmineIssue.getAssigned_to().getId(),redmineIssue.getStatus().getId(),
-                                redmineIssue.getPriority().getId(), 2, redmineIssue.getProject().getID());
-                        bProjectIssues.add(issue);
+                        if(redmineIssue.getAssigned_to() != null){
+                            Issue issue = new Issue(redmineIssue.getId(),redmineIssue.getTracker().getId(),redmineIssue.getSubject(),
+                                    redmineIssue.getAssigned_to().getId(),redmineIssue.getStatus().getId(),
+                                    redmineIssue.getPriority().getId(), 2, redmineIssue.getProject().getID());
+                            bProjectIssues.add(issue);
+                        } else {
+                            Issue issue = new Issue(redmineIssue.getId(),redmineIssue.getTracker().getId(),redmineIssue.getSubject(), redmineIssue.getStatus().getId(),
+                                    redmineIssue.getPriority().getId(), 2, redmineIssue.getProject().getID());
+                            bProjectIssues.add(issue);
+                        }
                     }
+                    getBIssues.releaseConnection();
                 }
             }
 
-            for(Issue issue : aProjectIssues) {
-                logger.debug("a Issue = " + issue);
-            }
-
-            for(Issue issue : bProjectIssues) {
-                logger.debug("b Issue = " + issue);
-            }
 
             for (Issue aIssue : aProjectIssues){
-                boolean found = false;
-                for(Issue bIssue: bProjectIssues){
-                    if(bIssue.getSubject().contains("(#"+ aIssue.getId() + ")")){
-                        found = true;
-                        break;
-                    }
-                }
-                if(!found) {
+                String hashedId = "(#"+ aIssue.getId() + ")";
+                Issue foundBIssue = bProjectIssues.stream()
+                        .filter(issue -> issue.getSubject().contains(hashedId))
+                        .findFirst()
+                        .orElse(null);
+                if(foundBIssue == null) {
                     logger.debug("eljutottam ide");
-                    long bUserRedId = -1;
-                    long userId = -1;
-                    long userPairBId = -1;
-                    for(SystemUser user : systemUsers){
-                        if(user.getRedmineid() == aIssue.getAssigned_to() && user.getSystemid() == 1){
-                            userId = user.getId();
-                            break;
-                        }
+                    SystemUser aUser = systemUsers.stream()
+                            .filter(user -> user.getRedmineid() == aIssue.getAssigned_to() && user.getSystemid() == 1)
+                            .findFirst()
+                            .orElse(null);
+                    String assignedTo = "";
+                    SystemUserPair userPair = null;
+                    if(aUser != null) {
+                        userPair = userPairs.stream().filter(pair -> pair.getAId() == aUser.getId()).findFirst().orElse(null);
                     }
-                    for(SystemUserPair pair : userPairs){
-                        if(pair.getAId() == userId){
-                            userPairBId = pair.getBId();
-                            break;
-                        }
-                    }
-                    for(SystemUser otherUser : systemUsers) {
-                        if(otherUser.getId() == userPairBId){
-                            bUserRedId = otherUser.getRedmineid();
-                            break;
+                    if(userPair != null) {
+                        SystemUserPair finalUserPair = userPair;
+                        SystemUser otherUser = systemUsers.stream().filter(user -> user.getId() == finalUserPair.getBId()).findFirst().orElse(null);
+                        if (otherUser != null) {
+                            assignedTo = ",\"assigned_to_id\":" + otherUser.getRedmineid();
                         }
                     }
 
-                    long bProjectRedId = -1;
-                    long projectId = -1;
-                    long projectPairBId = -1;
-                    for(Project project : projects){
-                        if(project.getRedmineid() == aIssue.getProjectid() && project.getSystemid() == 1){
-                            projectId = project.getID();
+                    Project bProject = null;
+                    Project aProject = projects.stream().filter(project -> project.getRedmineid() == aIssue.getProjectid() && project.getSystemid() == 1)
+                            .findFirst().orElse(null);
+                    ProjectPair projectPair = null;
+                    if(aProject != null) {
+                        projectPair = projectPairs.stream().filter(pair -> pair.getAid() == aProject.getID()).findFirst().orElse(null);
+                    }
+                    if(projectPair != null) {
+                        ProjectPair finalProjectPair = projectPair;
+                        Project otherProject = projects.stream().filter(project -> project.getID() == finalProjectPair.getBid()).findFirst().orElse(null);
+                        if (otherProject != null) {
+                            bProject = otherProject;
                         }
                     }
-                    for(ProjectPair pair : projectPairs){
-                        if(pair.getAid() == projectId){
-                            projectPairBId = pair.getBid();
-                        }
-                    }
-                    for(Project otherProject : projects) {
-                        if(otherProject.getID() == projectPairBId){
-                            bProjectRedId = otherProject.getRedmineid();
-                        }
-                    }
-                    logger.debug("userId: " + userId + " userPairBId: " + userPairBId + " user: " + bUserRedId + " project: " + bProjectRedId);
-                    if(bUserRedId != -1 && bProjectRedId != -1) {
+
+                    if(bProject != null){
                         HttpPost request = new HttpPost("http://localhost:3010/issues.json");
-                        String json = "{ \"issue\": {\"project_id\":" + bProjectRedId + ",\"subject\":\"" + aIssue.getSubject() +
-                                "(#" + aIssue.getId() + ")" +"\",\"assigned_to_id\":" + bUserRedId + "} }";
+                        String json = "{ \"issue\": {\"project_id\":" + bProject.getRedmineid() + ",\"subject\":\"" + aIssue.getSubject() +
+                                "(#" + aIssue.getId() + ")" +"\"" + assignedTo + "} }";
                         StringEntity entity = new StringEntity(json);
                         request.setEntity(entity);
                         request.setHeader("Accept", "application/json");
                         request.setHeader("Content-type", "application/json");
                         HttpResponse post = client.execute(request);
+                        request.releaseConnection();
                         logger.debug(post);
                     }
                 }
@@ -197,5 +203,4 @@ public class IssueController {
         }
         return "ok";
     }
-
 }
