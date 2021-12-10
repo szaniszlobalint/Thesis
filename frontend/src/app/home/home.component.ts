@@ -4,6 +4,7 @@ import {RedSystem} from "../models/redsystem";
 import {Subscription} from "rxjs";
 import {SystemService} from "../services/system.service";
 import {RedPair} from "../models/redpair";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-home',
@@ -19,7 +20,7 @@ export class HomeComponent implements OnInit {
   systemArray: RedSystem[] = [];
   chosenSystem: number = 0;
 
-  constructor(private appService: AppService, private systemService: SystemService) { }
+  constructor(private appService: AppService, private systemService: SystemService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getSystems();
@@ -43,7 +44,15 @@ export class HomeComponent implements OnInit {
       this.systemService.setSelectedSystem(chosenSystem);
   }
 
-  synchronizeIssues() {
-    this.appService.synchronizeIssues().then(res => console.log(res));
+  async synchronizeIssues() {
+    await this.appService.synchronizeIssues();
+    this.openSnackBar('Successful synchronization!', 'Ok');
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action,{
+      duration:  2000
+    });
+
   }
 }

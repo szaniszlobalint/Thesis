@@ -135,40 +135,50 @@ public class IssueController {
                         break;
                     }
                 }
-                if(!found){
+                if(!found) {
                     logger.debug("eljutottam ide");
                     long bUserRedId = -1;
+                    long userId = -1;
+                    long userPairBId = -1;
                     for(SystemUser user : systemUsers){
-                        if(user.getRedmineid() == aIssue.getAssigned_to()){
-                            for(SystemUserPair pair : userPairs){
-                                if(pair.getAId() == user.getId()){
-                                    for(SystemUser otherUser : systemUsers) {
-                                        if(otherUser.getId() == pair.getBId()){
-                                            bUserRedId = otherUser.getRedmineid();
-                                        }
-                                    }
-                                }
-                            }
+                        if(user.getRedmineid() == aIssue.getAssigned_to() && user.getSystemid() == 1){
+                            userId = user.getId();
+                            break;
+                        }
+                    }
+                    for(SystemUserPair pair : userPairs){
+                        if(pair.getAId() == userId){
+                            userPairBId = pair.getBId();
+                            break;
+                        }
+                    }
+                    for(SystemUser otherUser : systemUsers) {
+                        if(otherUser.getId() == userPairBId){
+                            bUserRedId = otherUser.getRedmineid();
+                            break;
                         }
                     }
 
                     long bProjectRedId = -1;
+                    long projectId = -1;
+                    long projectPairBId = -1;
                     for(Project project : projects){
-                        if(project.getRedmineid() == aIssue.getProjectid()){
-                            for(ProjectPair pair : projectPairs){
-                                if(pair.getAid() == project.getID()){
-                                    for(Project otherProject : projects) {
-                                        if(otherProject.getID() == pair.getBid()){
-                                            bProjectRedId = otherProject.getRedmineid();
-                                        }
-                                    }
-                                }
-                            }
+                        if(project.getRedmineid() == aIssue.getProjectid() && project.getSystemid() == 1){
+                            projectId = project.getID();
                         }
                     }
-                    //logger.debug("bProjectId = " + bProjectId + ", bUserId = " + bUserId + ", projectRedId = " + projectRedId + ", userRedId = " + userRedId );
+                    for(ProjectPair pair : projectPairs){
+                        if(pair.getAid() == projectId){
+                            projectPairBId = pair.getBid();
+                        }
+                    }
+                    for(Project otherProject : projects) {
+                        if(otherProject.getID() == projectPairBId){
+                            bProjectRedId = otherProject.getRedmineid();
+                        }
+                    }
+                    logger.debug("userId: " + userId + " userPairBId: " + userPairBId + " user: " + bUserRedId + " project: " + bProjectRedId);
                     if(bUserRedId != -1 && bProjectRedId != -1) {
-                        //logger.debug("bProjectid = "+ bProjectId +",bUserId = " + bUserId +", projectid = " +projectRedId + ", userid = " + userRedId);
                         HttpPost request = new HttpPost("http://localhost:3010/issues.json");
                         String json = "{ \"issue\": {\"project_id\":" + bProjectRedId + ",\"subject\":\"" + aIssue.getSubject() +
                                 "(#" + aIssue.getId() + ")" +"\",\"assigned_to_id\":" + bUserRedId + "} }";

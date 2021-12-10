@@ -66,6 +66,6 @@ export class AppService {
   }
 
   synchronizeIssues() {
-    return this.http.get<string>('http://localhost:8080/synchronizeissues').toPromise();
+    return this.http.get('http://localhost:8080/synchronizeissues', {responseType: 'text'}).toPromise();
   }
 }

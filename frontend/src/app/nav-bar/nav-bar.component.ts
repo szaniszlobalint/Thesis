@@ -31,13 +31,12 @@ export class NavBarComponent implements OnInit {
   printSelectedSystemPair() {
     let value: string | undefined;
     if(this.info.selectedPair === undefined) {
-      value = this.info.systemArray.find(item => item.id === this.info.systemPairs[0].aid)!.name + " - "
-      + this.info.systemArray.find(item => item.id === this.info.systemPairs[0].bid)!.name;
-    }else {
-      value = this.info.systemArray.find(item => item.id === this.info.selectedPair!.aid)!.name + " - "
-        + this.info.systemArray.find(item => item.id === this.info.selectedPair!.bid)!.name;
+        value = this.info.systemArray.find(item => item.id === this.info.systemPairs[0]?.aid)?.name + " - "
+          + this.info.systemArray.find(item => item.id === this.info.systemPairs[0]?.bid)?.name;
+    } else {
+      value = this.info.systemArray.find(item => item.id === this.info.selectedPair?.aid)?.name + " - "
+        + this.info.systemArray.find(item => item.id === this.info.selectedPair?.bid)?.name;
     }
     return value;
   }
-
 }
