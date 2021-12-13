@@ -52,7 +52,8 @@ public class IssueController {
         this.systemPairRepository = systemPairRepository;
     }
 
-    public void addIssues(HttpGet getRequest, HttpClient client, List<Issue> list, long systemid) throws IOException, JSONException {
+    public List<Issue> getIssues(HttpGet getRequest, HttpClient client, long systemid) throws IOException, JSONException {
+        List<Issue> list = new ArrayList<>();
         HttpResponse response = client.execute(getRequest);
 
         int statusCode = response.getStatusLine().getStatusCode();
@@ -78,6 +79,7 @@ public class IssueController {
             list.add(issue);
         }
         getRequest.releaseConnection();
+        return list;
     }
 
     @GetMapping("/synchronizeissues/{id}") // add systemPairId=id
@@ -91,7 +93,7 @@ public class IssueController {
             List<ProjectPair> projectPairs = (List<ProjectPair>) projectPairRepository.findAll();
             List<SystemUserPair> userPairs = (List<SystemUserPair>) systemUserPairRepository.findAll();
             List<Project> projects = (List<Project>) projectRepository.findAll();
-            List<Project> aProjects = projectRepository.getAProjects(systemPair.getAId(), projectPairRepository.findAllAProjects());
+            List<Project> aProjects = projectRepository.getAProjects(systemPair.getAId());
             List<Project> bProjects = projectRepository.findAllBySystemid(systemPair.getBId());
             List<SystemUser> systemUsers = (List<SystemUser>) systemUserRepository.findAll();
             List<Issue> aProjectIssues = new ArrayList<Issue>();
@@ -112,11 +114,11 @@ public class IssueController {
 
             for (Project project : aProjects) {
                     HttpGet getAIssuesRequest = new HttpGet("http://localhost:3000/issues.json?project_id=" + project.getRedmineid());
-                    addIssues(getAIssuesRequest, client, aProjectIssues,1);
+                    aProjectIssues.addAll(getIssues(getAIssuesRequest, client,1));
             }
 
             HttpGet getBIssuesRequest = new HttpGet("http://localhost:3010/issues.json");
-            addIssues(getBIssuesRequest, client, bProjectIssues, 2);
+            bProjectIssues = getIssues(getBIssuesRequest, client, 2);
 
 
             for (Issue aIssue : aProjectIssues){

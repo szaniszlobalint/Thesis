@@ -14,8 +14,8 @@ import java.util.List;
 public interface ProjectRepository extends CrudRepository<Project, Long> {
     boolean existsByNameAndSystemid(String login, long systemid);
 
-    @Query("SELECT p FROM Project p WHERE p.systemid = :num AND p.ID IN :projectpairs")
-    List<Project> getAProjects(@Param("num") long num, @Param("projectpairs") List<Long> projectPairs);
+    @Query("SELECT p FROM Project p WHERE p.systemid = :num AND p.ID IN (SELECT pp.aid FROM ProjectPair pp)")
+    List<Project> getAProjects(@Param("num") long num);
 
     List<Project> findAllBySystemid(long num);
 

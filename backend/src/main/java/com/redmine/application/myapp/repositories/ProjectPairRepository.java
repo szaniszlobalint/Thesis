@@ -14,4 +14,5 @@ public interface ProjectPairRepository extends CrudRepository<ProjectPair, Long>
     ProjectPair findByAidAndBid(long num1, long num2);
     @Query("SELECT p.aid FROM ProjectPair p")
     List<Long> findAllAProjects();
+
 }

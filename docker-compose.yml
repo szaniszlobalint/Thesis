@@ -37,6 +37,7 @@ services:
       - REDMINE_DB_DATABASE=redmineapp2
       - REDMINE_DB_PASSWORD=docker
 
+  redmineApp:
 networks:
   redmine:
     driver: bridge

@@ -15,7 +15,7 @@ const routes: Routes = [
 // /users?system=1
 // /system/1/users
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
