@@ -5,4 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SystemPairRepository extends CrudRepository<SystemPair, Long> {}
+public interface SystemPairRepository extends CrudRepository<SystemPair, Long> {
+    SystemPair findById(long num);
+}

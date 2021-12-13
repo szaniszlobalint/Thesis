@@ -3,32 +3,26 @@ package com.redmine.application.myapp.controllers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redmine.application.myapp.entities.*;
-import com.redmine.application.myapp.repositories.ProjectPairRepository;
-import com.redmine.application.myapp.repositories.ProjectRepository;
-import com.redmine.application.myapp.repositories.SystemUserPairRepository;
-import com.redmine.application.myapp.repositories.SystemUserRepository;
+import com.redmine.application.myapp.repositories.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -45,26 +39,60 @@ public class IssueController {
     private final SystemUserRepository systemUserRepository;
     private final ProjectPairRepository projectPairRepository;
     private final SystemUserPairRepository systemUserPairRepository;
+    private final SystemPairRepository systemPairRepository;
     ObjectMapper objectMapper = new ObjectMapper();
 
     public IssueController(ProjectRepository projectRepository, SystemUserRepository systemUserRepository,
-                           ProjectPairRepository projectPairRepository, SystemUserPairRepository systemUserPairRepository) {
+                           ProjectPairRepository projectPairRepository, SystemUserPairRepository systemUserPairRepository,
+                           SystemPairRepository systemPairRepository) {
         this.projectRepository = projectRepository;
         this.systemUserRepository = systemUserRepository;
         this.projectPairRepository = projectPairRepository;
         this.systemUserPairRepository = systemUserPairRepository;
+        this.systemPairRepository = systemPairRepository;
     }
 
-    @GetMapping("/synchronizeissues") // add systemPairId=id
-    public String SynchronizeIssues() {
+    public void addIssues(HttpGet getRequest, HttpClient client, List<Issue> list, long systemid) throws IOException, JSONException {
+        HttpResponse response = client.execute(getRequest);
+
+        int statusCode = response.getStatusLine().getStatusCode();
+
+        HttpEntity entity = response.getEntity();
+
+        JSONObject myObject = new JSONObject(EntityUtils.toString(entity));
+
+        List<RedIssueOriginal> redmineIssueList = objectMapper.readValue(myObject.getString("issues"), new TypeReference<List<RedIssueOriginal>>() {
+        });
+
+
+        for (RedIssueOriginal redmineIssue : redmineIssueList) {
+            Issue issue;
+            if(redmineIssue.getAssigned_to() != null){
+                issue = new Issue(redmineIssue.getId(), redmineIssue.getTracker().getId(), redmineIssue.getSubject(),
+                        redmineIssue.getAssigned_to().getId(), redmineIssue.getStatus().getId(),
+                        redmineIssue.getPriority().getId(), systemid, redmineIssue.getProject().getID());
+            } else {
+                issue = new Issue(redmineIssue.getId(), redmineIssue.getTracker().getId(), redmineIssue.getSubject(), redmineIssue.getStatus().getId(),
+                        redmineIssue.getPriority().getId(), systemid, redmineIssue.getProject().getID());
+            }
+            list.add(issue);
+        }
+        getRequest.releaseConnection();
+    }
+
+    @GetMapping("/synchronizeissues/{id}") // add systemPairId=id
+    public String SynchronizeIssues(@PathVariable("id") long systemPairId) {
         try{
             // Get systemPair
             // Get aProjects from aSystem which has any pair
             // projectpair, function with and without method
 
+            SystemPair systemPair =  systemPairRepository.findById(systemPairId);
             List<ProjectPair> projectPairs = (List<ProjectPair>) projectPairRepository.findAll();
             List<SystemUserPair> userPairs = (List<SystemUserPair>) systemUserPairRepository.findAll();
             List<Project> projects = (List<Project>) projectRepository.findAll();
+            List<Project> aProjects = projectRepository.getAProjects(systemPair.getAId(), projectPairRepository.findAllAProjects());
+            List<Project> bProjects = projectRepository.findAllBySystemid(systemPair.getBId());
             List<SystemUser> systemUsers = (List<SystemUser>) systemUserRepository.findAll();
             List<Issue> aProjectIssues = new ArrayList<Issue>();
             List<Issue> bProjectIssues = new ArrayList<Issue>();
@@ -80,67 +108,15 @@ public class IssueController {
                     .setDefaultRequestConfig(requestConfig)
                     .build();
 
-            for (Project project : projects) {
-                if (projectPairRepository.existsByAid(project.getID()) && project.getSystemid() == 1) {
+
+
+            for (Project project : aProjects) {
                     HttpGet getAIssuesRequest = new HttpGet("http://localhost:3000/issues.json?project_id=" + project.getRedmineid());
-                    HttpResponse response = client.execute(getAIssuesRequest);
-
-                    int statusCode = response.getStatusLine().getStatusCode();
-
-                    HttpEntity entity = response.getEntity();
-
-                    JSONObject myObject = new JSONObject(EntityUtils.toString(entity));
-
-                    List<RedIssueOriginal> redmineIssueList = objectMapper.readValue(myObject.getString("issues"), new TypeReference<List<RedIssueOriginal>>() {
-                    });
-
-
-                    for (RedIssueOriginal redmineIssue : redmineIssueList) {
-                        if(redmineIssue.getAssigned_to() != null){
-                            Issue issue = new Issue(redmineIssue.getId(),redmineIssue.getTracker().getId(),redmineIssue.getSubject(),
-                                    redmineIssue.getAssigned_to().getId(),redmineIssue.getStatus().getId(),
-                                    redmineIssue.getPriority().getId(), 1, redmineIssue.getProject().getID());
-                            aProjectIssues.add(issue);
-                        } else {
-                            Issue issue = new Issue(redmineIssue.getId(),redmineIssue.getTracker().getId(),redmineIssue.getSubject(), redmineIssue.getStatus().getId(),
-                                    redmineIssue.getPriority().getId(), 1, redmineIssue.getProject().getID());
-                            aProjectIssues.add(issue);
-                        }
-                    }
-                    getAIssuesRequest.releaseConnection();
-                }
+                    addIssues(getAIssuesRequest, client, aProjectIssues,1);
             }
 
-            for (Project project : projects) {
-                if (project.getSystemid() == 2) {
-                    HttpGet getBIssues = new HttpGet("http://localhost:3010/issues.json?project_id=" + project.getRedmineid());
-                    HttpResponse response = client.execute(getBIssues);
-
-                    int statusCode = response.getStatusLine().getStatusCode();
-
-                    HttpEntity entity = response.getEntity();
-
-                    JSONObject myObject = new JSONObject(EntityUtils.toString(entity));
-
-                    List<RedIssueOriginal> redmineIssueList = objectMapper.readValue(myObject.getString("issues"), new TypeReference<List<RedIssueOriginal>>() {
-                    });
-
-
-                    for (RedIssueOriginal redmineIssue : redmineIssueList) {
-                        if(redmineIssue.getAssigned_to() != null){
-                            Issue issue = new Issue(redmineIssue.getId(),redmineIssue.getTracker().getId(),redmineIssue.getSubject(),
-                                    redmineIssue.getAssigned_to().getId(),redmineIssue.getStatus().getId(),
-                                    redmineIssue.getPriority().getId(), 2, redmineIssue.getProject().getID());
-                            bProjectIssues.add(issue);
-                        } else {
-                            Issue issue = new Issue(redmineIssue.getId(),redmineIssue.getTracker().getId(),redmineIssue.getSubject(), redmineIssue.getStatus().getId(),
-                                    redmineIssue.getPriority().getId(), 2, redmineIssue.getProject().getID());
-                            bProjectIssues.add(issue);
-                        }
-                    }
-                    getBIssues.releaseConnection();
-                }
-            }
+            HttpGet getBIssuesRequest = new HttpGet("http://localhost:3010/issues.json");
+            addIssues(getBIssuesRequest, client, bProjectIssues, 2);
 
 
             for (Issue aIssue : aProjectIssues){
@@ -198,7 +174,7 @@ public class IssueController {
                 }
             }
         }
-        catch(IOException | JSONException e){
+        catch(Exception e){
             logger.error(e);
         }
         return "ok";
