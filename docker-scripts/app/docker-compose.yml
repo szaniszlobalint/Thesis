@@ -1,0 +1,10 @@
+version: "3.5"
+
+services:
+  redmineapp:
+    build:
+      context: ../..
+      dockerfile: docker-scripts/app/Dockerfile
+    image: "redmineapp"
+    ports:
+      - 8080:8080

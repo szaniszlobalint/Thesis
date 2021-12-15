@@ -1,8 +1,19 @@
-FROM maven:3.8.3-jdk-17
+FROM maven:3.8.3-openjdk-17
 
+WORKDIR /usr/src/app
 
-# package our application code
+COPY ./backend/ ./backend
+COPY ./frontend/ ./frontend
+COPY ./pom.xml .
+
+RUN echo "aa"
+RUN ls .
+RUN ls /usr/src/app/backend
+RUN ls /usr/src/app/frontend
+
 RUN mvn clean package
 
-# set the startup command to execute the jar
-CMD exec ./docker-entry.sh
+COPY docker-scripts/app/docker-entry.sh /usr/src/docker-entry.sh
+RUN chmod +x /usr/src/docker-entry.sh
+
+CMD exec /usr/src/docker-entry.sh

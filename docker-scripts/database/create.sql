@@ -6,6 +6,22 @@ LC_CTYPE = 'en_US.utf8'
 TABLESPACE = pg_default
 CONNECTION LIMIT = -1;
 
+CREATE DATABASE redmineapp1
+OWNER =  postgres
+ENCODING = 'UTF-8'
+LC_COLLATE = 'en_US.utf8'
+LC_CTYPE = 'en_US.utf8'
+TABLESPACE = pg_default
+CONNECTION LIMIT = -1;
+
+CREATE DATABASE redmineapp2
+OWNER =  postgres
+ENCODING = 'UTF-8'
+LC_COLLATE = 'en_US.utf8'
+LC_CTYPE = 'en_US.utf8'
+TABLESPACE = pg_default
+CONNECTION LIMIT = -1;
+
 \c redmineapp
 
 CREATE TABLE IF NOT EXISTS public.SYSTEM (
@@ -16,7 +32,7 @@ CREATE TABLE IF NOT EXISTS public.SYSTEM (
 
 CREATE TABLE IF NOT EXISTS public.SYSTEM_PAIR (
     ID serial PRIMARY KEY NOT NULL,
-    A_SystemID INT NOT NULL,
+    A_SystemID INT UNIQUE NOT NULL,
     B_SystemID INT NOT NULL,
     FOREIGN KEY (A_SystemID) REFERENCES SYSTEM (ID),
     FOREIGN KEY (B_SystemID) REFERENCES SYSTEM (ID)
@@ -27,9 +43,6 @@ CREATE TABLE IF NOT EXISTS public.SYSTEM_USER (
     firstname VARCHAR(50) NOT NULL,
     lastname VARCHAR(50) NOT NULL,
     login VARCHAR(50) NOT NULL,
-    password VARCHAR(50),
-    mail VARCHAR(100),
-    admin BOOLEAN,
     systemID INT NOT NULL,
     redmineID INT NOT NULL,
     FOREIGN KEY (systemID) REFERENCES SYSTEM(ID)
@@ -43,13 +56,12 @@ CREATE TABLE IF NOT EXISTS public.SYSTEM_USER_PAIR (
 );
 CREATE TABLE IF NOT EXISTS public.PROJECT (
     ID serial PRIMARY KEY NOT NULL,
-    name VARCHAR(100) UNIQUE NOT NULL,
-    identifier VARCHAR(100) UNIQUE NOT NULL,
-    description VARCHAR(100) NOT NULL,
-    user_id INT,
-    system_id INT,
-    FOREIGN KEY (user_id) REFERENCES SYSTEM_USER(ID),
-    FOREIGN KEY (system_id) REFERENCES SYSTEM(ID)
+    name VARCHAR(100) NOT NULL,
+    identifier VARCHAR(100) NOT NULL,
+    description VARCHAR(100),
+    systemid INT,
+    redmineid INT NOT NULL,
+    FOREIGN KEY (systemid) REFERENCES SYSTEM(ID)
 
 );
 CREATE TABLE IF NOT EXISTS public.PROJECT_PAIR (

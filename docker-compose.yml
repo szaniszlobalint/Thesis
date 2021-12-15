@@ -7,18 +7,15 @@ services:
       - redmine
     environment:
       - POSTGRES_PASSWORD=docker
-      - APP_DB_USER=dbuser
-      - APP_DB_PASS=docker
-      - APP_DB_NAME=redmineapp
     volumes:
-      - ./db:/docker-entrypoint-initdb.d/
+      - ./docker-scripts/database:/docker-entrypoint-initdb.d
     ports:
       - 5432:5432
 
   redmineA:
-    image: redmine:latest
+    image: redmine:4.2.2
     networks:
-      - redmine:4.2.2
+      - redmine
     ports:
       - 3000:3000
     environment:
@@ -27,9 +24,9 @@ services:
       - REDMINE_DB_PASSWORD=docker
 
   redmineB:
-    image: redmine:latest
+    image: redmine:4.2.2
     networks:
-      - redmine:4.2.2
+      - redmine
     ports:
       - 3010:3000
     environment:
@@ -38,6 +35,19 @@ services:
       - REDMINE_DB_PASSWORD=docker
 
   redmineApp:
+    build:
+      context: .
+      dockerfile: docker-scripts/app/Dockerfile
+    image: "redmineapp"
+    networks:
+      - redmine
+    ports:
+      - 8080:8080
+    environment:
+      - REDMINE_A_URL=redmineA:3000
+      - REDMINE_B_URL=redmineB:3000
+      - POSTGRES_URL=postgres:5432
+
 networks:
   redmine:
     driver: bridge
