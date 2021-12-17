@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.100.191:4200/"})
 public class IssueController {
 
     static final Logger logger = Logger.getLogger(IssueController.class);
@@ -62,8 +62,8 @@ public class IssueController {
 
         JSONObject myObject = new JSONObject(EntityUtils.toString(entity));
 
-        List<RedIssueOriginal> redmineIssueList = objectMapper.readValue(myObject.getString("issues"), new TypeReference<List<RedIssueOriginal>>() {
-        });
+        List<RedIssueOriginal> redmineIssueList = objectMapper.readValue(myObject.getString("issues"),
+                new TypeReference<List<RedIssueOriginal>>() {});
 
 
         for (RedIssueOriginal redmineIssue : redmineIssueList) {
@@ -73,7 +73,8 @@ public class IssueController {
                         redmineIssue.getAssigned_to().getId(), redmineIssue.getStatus().getId(),
                         redmineIssue.getPriority().getId(), systemid, redmineIssue.getProject().getID());
             } else {
-                issue = new Issue(redmineIssue.getId(), redmineIssue.getTracker().getId(), redmineIssue.getSubject(), redmineIssue.getStatus().getId(),
+                issue = new Issue(redmineIssue.getId(), redmineIssue.getTracker().getId(), redmineIssue.getSubject(),
+                        redmineIssue.getStatus().getId(),
                         redmineIssue.getPriority().getId(), systemid, redmineIssue.getProject().getID());
             }
             list.add(issue);
@@ -82,7 +83,7 @@ public class IssueController {
         return list;
     }
 
-    @GetMapping("/synchronizeissues/{id}") // add systemPairId=id
+    @GetMapping("rest/synchronizeissues/{id}") // add systemPairId=id
     public String SynchronizeIssues(@PathVariable("id") long systemPairId) {
         try{
             // Get systemPair

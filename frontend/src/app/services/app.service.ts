@@ -14,58 +14,58 @@ export class AppService {
   constructor(private http: HttpClient) { }
 
   loginUser(user: User) {
-    return this.http.post<User>('http://localhost:8080/login', user);
+    return this.http.post<User>('rest/login', user);
   }
 
   getAllRedUsers() {
-    return this.http.get<RedUser[]>('http://localhost:8080/getallsystemusers').toPromise();
+    return this.http.get<RedUser[]>('rest/getallsystemusers').toPromise();
   }
 
   connectUsers(AID: number, BID: number) {
-    return this.http.post('http://localhost:8080/savesystemuserpair', {aid: AID, bid: BID}).toPromise();
+    return this.http.post('rest/savesystemuserpair', {aid: AID, bid: BID}).toPromise();
   }
 
   getUserPairs() {
-    return this.http.get<RedPair[]>('http://localhost:8080/systemuserpair').toPromise();
+    return this.http.get<RedPair[]>('rest/systemuserpair').toPromise();
   }
 
   deleteUserConnection(auserid: number, buserid: number) {
-    return this.http.post<RedPair>('http://localhost:8080/deletesystemuserpair', {aid: auserid, bid: buserid}).toPromise();
+    return this.http.post<RedPair>('rest/deletesystemuserpair', {aid: auserid, bid: buserid}).toPromise();
   }
 
   refreshUsers() {
-    return this.http.get<RedUser[]>('http://localhost:8080/refreshusers').toPromise();
+    return this.http.get<RedUser[]>('rest/refreshusers').toPromise();
   }
 
   getSystems() {
-    return this.http.get<RedSystem[]>('http://localhost:8080/getRedSystems').toPromise();
+    return this.http.get<RedSystem[]>('rest/getRedSystems').toPromise();
   }
 
   getSystemPairs() {
-    return this.http.get<RedPair[]>('http://localhost:8080/getsystempairs').toPromise();
+    return this.http.get<RedPair[]>('rest/getsystempairs').toPromise();
   }
 
   async getAllRedProjects() {
-    return this.http.get<RedProject[]>('http://localhost:8080/getallprojects').toPromise();
+    return this.http.get<RedProject[]>('rest/getallprojects').toPromise();
   }
 
   async getProjectPairs() {
-    return this.http.get<RedPair[]>('http://localhost:8080/getprojectpairs').toPromise();
+    return this.http.get<RedPair[]>('rest/getprojectpairs').toPromise();
   }
 
   async connectProjects(aid: number, bid: number) {
-    return this.http.post('http://localhost:8080/saveprojectpair', {aid: aid,bid: bid}).toPromise();
+    return this.http.post('rest/saveprojectpair', {aid: aid,bid: bid}).toPromise();
   }
 
   async refreshProjects() {
-    return this.http.get<RedProject[]>('http://localhost:8080/refreshprojects').toPromise();
+    return this.http.get<RedProject[]>('rest/refreshprojects').toPromise();
   }
 
   async deleteProjectConnection(aid: number, bid: number) {
-    return this.http.post<RedPair>('http://localhost:8080/deleteprojectpair', {aid: aid, bid: bid}).toPromise();
+    return this.http.post<RedPair>('rest/deleteprojectpair', {aid: aid, bid: bid}).toPromise();
   }
 
   synchronizeIssues() {
-    return this.http.get('http://localhost:8080/synchronizeissues/1', {responseType: 'text'}).toPromise();
+    return this.http.get('rest/synchronizeissues/1', {responseType: 'text'}).toPromise();
   }
 }

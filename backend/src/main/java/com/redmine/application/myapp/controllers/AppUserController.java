@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.100.191:4200/"})
 public class AppUserController {
 
     private final AppUserRepository appUserRepository;
@@ -17,7 +17,7 @@ public class AppUserController {
         this.appUserRepository = appUserRepository;
     }
 
-    @PostMapping("/login")
+    @PostMapping("rest/login")
     public AppUser loginUser(@RequestBody AppUser user) {
         try{
             if(appUserRepository.findByUsername(user.getUsername())==null){
@@ -32,12 +32,12 @@ public class AppUserController {
 
     }
 
-    @GetMapping("/getallusers")
+    @GetMapping("rest/getallusers")
     public List<AppUser> getAppUsers() {
         return (List<AppUser>) appUserRepository.findAll();
     }
 
-    @PostMapping("/saveappuser")
+    @PostMapping("rest/saveappuser")
     void addProjecct(@RequestBody AppUser app_user) {
         appUserRepository.save(app_user);
     }

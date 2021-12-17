@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.100.191:4200/"})
 public class SystemUserController {
 
     private final SystemUserRepository systemUserRepository;
@@ -19,22 +19,21 @@ public class SystemUserController {
 
 
 
-    @GetMapping("/getallsystemusers")
+    @GetMapping("rest/getallsystemusers")
     public List<SystemUser> getSystemUsers() {
         return (List<SystemUser>) systemUserRepository.findAll();
 
     }
 
-    @PostMapping("/savesystemuser")
+    @PostMapping("rest/savesystemuser")
     void addSystemUser(@RequestBody SystemUser system_User) {
         systemUserRepository.save(system_User);
     }
 
-    @PostMapping("/updatesystemuser")
-    void addSystemUsers(@RequestBody SystemUser[] system_User){
-        for (SystemUser systemUser : system_User) {
+    @PostMapping("rest/updatesystemuser")
+    void addSystemUsers(@RequestBody SystemUser[] systemUsers){
+        for (SystemUser systemUser : systemUsers) {
             if (!systemUserRepository.existsByLoginAndSystemid(systemUser.getLogin(), systemUser.getSystemid())) {
-                System.out.println(systemUser);
                 addSystemUser(systemUser);
             }
         }

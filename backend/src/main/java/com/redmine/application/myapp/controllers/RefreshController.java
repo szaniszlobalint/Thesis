@@ -36,7 +36,7 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.100.191:4200/"})
 public class RefreshController {
 
     ObjectMapper objectMapper = new ObjectMapper();
@@ -65,7 +65,7 @@ public class RefreshController {
         }
     }
 
-    @GetMapping("/refreshusers")
+    @GetMapping("rest/refreshusers")
     public void RefreshUsersList() throws IOException {
         try{
             CredentialsProvider provider = new BasicCredentialsProvider();
@@ -120,7 +120,7 @@ public class RefreshController {
         }
     }
 
-    @GetMapping("/refreshprojects")
+    @GetMapping("rest/refreshprojects")
     public void RefreshProjectsList() throws IOException {
         try{
             CredentialsProvider provider = new BasicCredentialsProvider();

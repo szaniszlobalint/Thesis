@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://192.168.100.191:4200/"})
 public class SystemUserPairController {
 
     private final SystemUserPairRepository systemUserPairRepository;
@@ -18,23 +18,23 @@ public class SystemUserPairController {
     }
 
 
-    @GetMapping("/systemuserpair")
+    @GetMapping("rest/systemuserpair")
     public List<SystemUserPair> getSystemUserPairs() {
         return (List<SystemUserPair>) systemUserPairRepository.findAll();
 
     }
 
-    @PostMapping("/savesystemuserpair")
+    @PostMapping("rest/savesystemuserpair")
     void addSystemUserPairs(@RequestBody SystemUserPair system_User_Pair) {
         systemUserPairRepository.save(system_User_Pair);
     }
 
-    @PostMapping("/deletesystemuserpair")
+    @PostMapping("rest/deletesystemuserpair")
     void deleteSystemUserPair(@RequestBody SystemUserPair systemUserPair){
         systemUserPairRepository.delete(systemUserPairRepository.findByAidAndBid(systemUserPair.getAId(),systemUserPair.getBId()));
     }
 
-    @PostMapping("/checksystemuserpairs")
+    @PostMapping("rest/checksystemuserpairs")
     SystemUserPair checkPairs(@RequestBody SystemUserPair system_user_pair){
         if(systemUserPairRepository.existsByAid(system_user_pair.getAId())){
             System.out.println(systemUserPairRepository.findByAid(system_user_pair.getAId()).getBId());

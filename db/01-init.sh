@@ -28,9 +28,6 @@ CREATE TABLE IF NOT EXISTS public.SYSTEM_USER (
     firstname VARCHAR(50) NOT NULL,
     lastname VARCHAR(50) NOT NULL,
     login VARCHAR(50) NOT NULL,
-    password VARCHAR(50),
-    mail VARCHAR(100),
-    admin BOOLEAN,
     systemID INT NOT NULL,
     redmineID INT NOT NULL,
     FOREIGN KEY (systemID) REFERENCES SYSTEM(ID)
@@ -47,11 +44,10 @@ CREATE TABLE IF NOT EXISTS public.PROJECT (
     name VARCHAR(100) NOT NULL,
     identifier VARCHAR(100) NOT NULL,
     description VARCHAR(100),
-    user_id INT,
-    systemid INT NOT NULL,
+    systemid INT,
     redmineid INT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES SYSTEM_USER(ID),
-    FOREIGN KEY (system_id) REFERENCES SYSTEM(ID)
+    FOREIGN KEY (systemid) REFERENCES SYSTEM(ID)
+
 );
 CREATE TABLE IF NOT EXISTS public.PROJECT_PAIR (
     ID serial PRIMARY KEY NOT NULL,
