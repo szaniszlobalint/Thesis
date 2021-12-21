@@ -114,11 +114,11 @@ public class IssueController {
 
 
             for (Project project : aProjects) {
-                    HttpGet getAIssuesRequest = new HttpGet("http://localhost:3000/issues.json?project_id=" + project.getRedmineid());
+                    HttpGet getAIssuesRequest = new HttpGet("http://"+System.getenv("REDMINE_A_URL")+"/issues.json?project_id=" + project.getRedmineid());
                     aProjectIssues.addAll(getIssues(getAIssuesRequest, client,1));
             }
 
-            HttpGet getBIssuesRequest = new HttpGet("http://localhost:3010/issues.json");
+            HttpGet getBIssuesRequest = new HttpGet("http://"+System.getenv("REDMINE_B_URL")+"/issues.json");
             bProjectIssues = getIssues(getBIssuesRequest, client, 2);
 
 
@@ -163,7 +163,7 @@ public class IssueController {
                     }
 
                     if(bProject != null){
-                        HttpPost request = new HttpPost("http://localhost:3010/issues.json");
+                        HttpPost request = new HttpPost("http://"+System.getenv("REDMINE_B_URL")+"/issues.json");
                         String json = "{ \"issue\": {\"project_id\":" + bProject.getRedmineid() + ",\"subject\":\"" + aIssue.getSubject() +
                                 "(#" + aIssue.getId() + ")" +"\"" + assignedTo + "} }";
                         StringEntity entity = new StringEntity(json);

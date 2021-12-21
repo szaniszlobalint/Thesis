@@ -11,6 +11,7 @@ services:
       - POSTGRES_DB=redmineapp
     volumes:
       - ./docker-scripts/database:/docker-entrypoint-initdb.d/
+      - ./db:/def-data-script/
     ports:
       - 5432:5432
 

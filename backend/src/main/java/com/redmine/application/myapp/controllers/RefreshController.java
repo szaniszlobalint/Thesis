@@ -130,7 +130,7 @@ public class RefreshController {
                     .setDefaultCredentialsProvider(provider)
                     .build();
 
-            HttpResponse response = client.execute(new HttpGet("http://localhost:3000/projects.json"));
+            HttpResponse response = client.execute(new HttpGet("http://"+System.getenv("REDMINE_A_URL")+"/projects.json"));
 
             int statusCode = response.getStatusLine().getStatusCode();
 
@@ -148,7 +148,7 @@ public class RefreshController {
                 addProject(project);
             }
 
-            response = client.execute(new HttpGet("http://localhost:3010/projects.json"));
+            response = client.execute(new HttpGet("http://"+System.getenv("REDMINE_B_URL")+"/projects.json"));
 
             statusCode = response.getStatusLine().getStatusCode();
 
