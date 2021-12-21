@@ -76,8 +76,7 @@ public class RefreshController {
                     .setDefaultCredentialsProvider(provider)
                     .build();
 
-            HttpResponse response = client.execute(new HttpGet("http://localhost:3000/users.json"));
-
+            HttpResponse response = client.execute(new HttpGet("http://"+System.getenv("REDMINE_A_URL")+"/users.json"));
             int statusCode = response.getStatusLine().getStatusCode();
 
             HttpEntity entity = response.getEntity();
@@ -95,7 +94,7 @@ public class RefreshController {
                 addSystemUser(systemUser);
             }
 
-            response = client.execute(new HttpGet("http://localhost:3010/users.json"));
+            response = client.execute(new HttpGet("http://"+System.getenv("REDMINE_B_URL")+"/users.json"));
 
             statusCode = response.getStatusLine().getStatusCode();
 
