@@ -50,7 +50,3 @@ create them in the right place, assigned to the right person.
 
 To run it, you need a docker. Once in the project folder, use the docker compose up --build command, and then manually start any containers that would not have started. The Redmine setup is discussed within the thesis.
 
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
